@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/peckishDB?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
+
+  jpa:
+    database: mysql
+    hibernate:
+      # DB table 자동 생성 옵션
+      ddl-auto: update
+    # jpa log
+    show-sql: true
+    properties:
+      hibernate:
+        # 로그 가독성 향상
+        format_sql: true
+        highlight_sql: true
+        # 비표준 언어
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 10MB
+      
+# 파일 업로드 저장 경로
+peckish.upload.path: upload
+
+
+# hibernate log
+logging:
+  level:
+    org.hibernate.sql: debug
+    org.hibernate.type: trace
+    org.springframework.security.web: trace
+
+# jsessionid 파라미터로 전달 X
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
