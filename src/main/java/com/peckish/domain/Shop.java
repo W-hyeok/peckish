@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "member")
+// @ToString(exclude = "member")
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,12 +44,15 @@ public class Shop {
     private Map map;
 
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Visited> visited = new ArrayList<>();
 
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Favorite> favorites = new ArrayList<>();
 
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Review> reviews = new ArrayList<>();
 
 

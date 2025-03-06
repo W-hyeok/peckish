@@ -32,6 +32,7 @@ public class ShopUser {
     private String infoType = "USER";  // User
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopUser")
+    @Builder.Default
     private List<MenuUser> menuUser = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY) // Member:Shop=N:1 // 기본값 EAGER

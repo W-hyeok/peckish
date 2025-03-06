@@ -35,8 +35,11 @@ logging:
     org.hibernate.type: trace
     org.springframework.security.web: trace
 
-# jsessionid 파라미터로 전달 X
+# jsessionid 파라미터로 전달X
 server:
   servlet:
     session:
       tracking-modes: cookie
+    context-path: /
+  port: 8080
+

@@ -42,6 +42,7 @@ public class ShopOwner {
     private Member member;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopOwner")
+    @Builder.Default
     private List<MenuOwner> menuOwner = new ArrayList<>();
 
     // 수정 : regDate 제외한 모든 데이터 수정
