@@ -16,6 +16,7 @@ public class MemberResponseDTO {
     private String password;
     private String nickname;
     private String phone;
+    private String businessNumber;
     private String profileFilename;
     private String certiFilename;
     private boolean social;

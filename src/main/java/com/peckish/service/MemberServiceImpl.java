@@ -105,6 +105,7 @@ public class MemberServiceImpl implements MemberService {
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .phone(member.getPhone())
+                .businessNumber(member.getBusinessNumber())
                 .profileFilename(member.getProfileFilename())
                 .certiFilename(member.getCertiFilename())
                 .social(member.isSocial())
@@ -123,6 +124,7 @@ public class MemberServiceImpl implements MemberService {
                 .password(passwordEncoder.encode(memberFormDTO.getPassword()))
                 .nickname(memberFormDTO.getNickname())
                 .phone(memberFormDTO.getPhone())
+                .businessNumber(memberFormDTO.getBusinessNumber())
                 .profileFilename(memberFormDTO.getProfileFilename())
                 .certiFilename(memberFormDTO.getCertiFilename())
                 .social(false)
@@ -133,11 +135,11 @@ public class MemberServiceImpl implements MemberService {
         member.addRole(Role.USER);
         log.info("MemberType: {}", memberFormDTO.getMemberType());
 
-        if(memberFormDTO.getMemberType().equals("owner")) {
+        if(memberFormDTO.getMemberType().equals("OWNER")) {
             member.addRole(Role.OWNER); // 사업자 권한
             member.changeMemberStat(2);
         }
-        if(memberFormDTO.getMemberType().equals("admin")) {
+        if(memberFormDTO.getMemberType().equals("ADMIN")) {
             member.addRole(Role.OWNER); // 사업자 권한
             member.addRole(Role.ADMIN); // 관리자 권한
         }

@@ -19,6 +19,7 @@ public class MemberFormModifyInfoDTO {
     private String password;
     private String nickname;
     private String phone;
+    private String businessNumber;
     private MultipartFile certiImg;
     private String certiFilename;
     private String memberType;

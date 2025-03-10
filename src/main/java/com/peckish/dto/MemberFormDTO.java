@@ -17,6 +17,7 @@ public class MemberFormDTO {
     private String password;
     private String nickname;
     private String phone;
+    private String businessNumber;
     private MultipartFile profileImg;
     private String profileFilename;
     private MultipartFile certiImg;

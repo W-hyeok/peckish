@@ -61,7 +61,7 @@ public class CustomSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration(); // CORS 설정 객체 생성
-        corsConfiguration.setAllowedOriginPatterns(Arrays.asList("*")); // 리소스 공유를 허용할 origin 설정 (*: 모든 출처에서의 요청 허용). "http://localhost:5173"
+        corsConfiguration.setAllowedOriginPatterns(Arrays.asList("https://hungrymoment.store", "*")); // 리소스 공유를 허용할 origin 설정 (*: 모든 출처에서의 요청 허용). "http://localhost:5173"
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")); // 허용할 HTTP 메서드
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type")); // 요청 헤더에 대한 허용 항목 설정
         corsConfiguration.setAllowCredentials(true); // 클라이언트가 쿠키를 사용할 수 있도록 허용

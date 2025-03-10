@@ -20,6 +20,7 @@ public class Member {
     private String password; // 비밀번호
     private String nickname; // 닉네임
     private String phone;
+    private String businessNumber;
     private String profileFilename;
     private String certiFilename;
     private boolean social; // 소셜 회원 여부
@@ -62,6 +63,8 @@ public class Member {
     public void changePhone(String phone) {
         this.phone = phone;
     }
+    // 사업자 등록번호 변경
+    public void changeBusinessNumber(String businessNumber) {this.businessNumber = businessNumber;}
     // profileFilename 변경
     public void changeProfileFilename(String profileFilename) {
         this.profileFilename = profileFilename;
