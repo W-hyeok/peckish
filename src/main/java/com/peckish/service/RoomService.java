@@ -33,7 +33,7 @@ public class RoomService {
         public Room createRoom(String member1, String member2, Long shopId) {
 
             // 1. 상점 정보 및 상점 주인 조회
-            ShopOwner ownerInfo = shopOwnerRepository.findById(shopId)
+            ShopOwner ownerInfo = shopOwnerRepository.findByShop_ShopId(shopId)
                     .orElseThrow(() -> new EntityNotFoundException("ShopOwner not found for shopId: " + shopId));
 
 

@@ -238,6 +238,7 @@ public class ShopController {
 
     @GetMapping("/owner/{shopId}")
     public ResponseEntity<ShopOwnerDTO> ShopOwnerInfo(@PathVariable Long shopId) {
+        log.info("shopId로 조회한 가게 Controller: {}",shopId);
         ShopOwnerDTO shopOwnerDTO = shopService.getShopOwnerEmail(shopId);
         return ResponseEntity.ok(shopOwnerDTO);
     }

@@ -386,7 +386,8 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public ShopOwnerDTO getShopOwnerEmail(Long shopId) {
-        ShopOwner shopOwner = shopOwnerRepository.findById(shopId)
+        log.info("shopId로 조회한 가게 Service: {}",shopId);
+        ShopOwner shopOwner = shopOwnerRepository.findByShop_ShopId(shopId)
                 .orElseThrow(() -> new EntityNotFoundException("ShopId로 ShopOwner 정보를 찾을 수 없습니다. : " + shopId));
 
         return ShopOwnerDTO.builder()
