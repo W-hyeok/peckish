@@ -4,6 +4,7 @@ import com.peckish.domain.*;
 import com.peckish.dto.*;
 import com.peckish.repository.*;
 import com.peckish.util.FileUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -112,8 +113,6 @@ public class ShopServiceImpl implements ShopService {
 
         return shopId;
     }
-
-
 
   // 메뉴 등록
     @Override
@@ -385,7 +384,15 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
+    @Override
+    public ShopOwnerDTO getShopOwnerEmail(Long shopId) {
+        ShopOwner shopOwner = shopOwnerRepository.findById(shopId)
+                .orElseThrow(() -> new EntityNotFoundException("ShopId로 ShopOwner 정보를 찾을 수 없습니다. : " + shopId));
 
+        return ShopOwnerDTO.builder()
+                .email(shopOwner.getMember().getEmail())  // ShopOwner 엔티티의 Member에서 이메일 추출
+                .build();
+    }
 
 
 }

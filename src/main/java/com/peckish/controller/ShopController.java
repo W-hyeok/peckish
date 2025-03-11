@@ -236,4 +236,10 @@ public class ShopController {
         return "Success";
     }
 
+    @GetMapping("/owner/{shopId}")
+    public ResponseEntity<ShopOwnerDTO> ShopOwnerInfo(@PathVariable Long shopId) {
+        ShopOwnerDTO shopOwnerDTO = shopService.getShopOwnerEmail(shopId);
+        return ResponseEntity.ok(shopOwnerDTO);
+    }
+
 }

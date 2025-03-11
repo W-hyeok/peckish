@@ -41,6 +41,8 @@ public interface ShopService {
     // 상점 exist 업데이트
     void updateShopExist(Long shopId);
 
+    // 상점 주인 이메일 조회
+    ShopOwnerDTO getShopOwnerEmail(Long shopId);
 
 
 }
