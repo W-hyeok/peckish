@@ -1,11 +1,12 @@
 package com.peckish.service;
 
 import com.peckish.dto.ReviewFormDTO;
+import jakarta.transaction.Transactional;
 
-
+@Transactional
 public interface ReviewService {
 
-    Long save (Long shopId, Long ShopDetailId, String infoType, ReviewFormDTO reviewDTO);
+    Long add(Long shopId, String infoType, ReviewFormDTO reviewFormDTO);
 
 
 }

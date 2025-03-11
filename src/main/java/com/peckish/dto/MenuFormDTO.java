@@ -52,7 +52,6 @@ public class MenuFormDTO {
     }
 
 
-
     //Entity -> DTO toMenuOwnerDTO
     public MenuOwnerDTO toMenuOwnerDTO(MenuOwner menuOwner){
         MenuOwnerDTO menuOwnerDTO = new MenuOwnerDTO();

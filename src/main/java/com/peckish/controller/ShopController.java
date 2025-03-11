@@ -88,21 +88,6 @@ public class ShopController {
         return Map.of("RESULT", savedshopID);
     }
 
-
-/*
-    // 제보,인증 추가 상점등록
-    @PostMapping("/add/{shopId}")
-    public Map<String, Long> shopAdditional(@PathVariable Long shopId, ShopDTO shopDTO, ShopDetailDTO shopDetailDTO, MapDTO mapDTO){
-
-        log.info("상점 추가 등록 - shopId : {}", shopId);
-        shopService.add(shopDTO,shopDetailDTO,mapDTO);
-
-        return Map.of("RESULT", shopId);
-    }
-*/
-
-
-
     // 상점 메뉴 등록시 기존 목록 요청
     @GetMapping("/addMenu/{shopId}/{infoType}")
     public Map<String, List> menuList(@PathVariable("infoType") String infoType, @PathVariable("shopId") Long shopId) {
