@@ -14,8 +14,8 @@ import java.util.Map;
 @Service
 public class PapagoTranslationService {
 
-    private static final String CLIENT_ID = "b54ba3w4qn"; // 네이버 클라이언트 ID
-    private static final String CLIENT_SECRET = "uKg62zpM6sxCJX7WysWAO74zZ0VDuHZupBYOBf0k"; // 네이버 클라이언트 시크릿
+    private static final String CLIENT_ID = "b54ba3w4qn"; // 네이버 클라이언트 ID 4wfrkqolon
+    private static final String CLIENT_SECRET = "uKg62zpM6sxCJX7WysWAO74zZ0VDuHZupBYOBf0k"; // 네이버 클라이언트 시크릿 J2ZFvmjujYz3MEsEW4yPrWFH3sFsVWGb2pmQFBNH
 
     private final RestTemplate restTemplate = new RestTemplate();
 

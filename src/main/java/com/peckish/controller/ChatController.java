@@ -1,11 +1,13 @@
 package com.peckish.controller;
 
+import com.peckish.domain.Msg;
 import com.peckish.domain.Room;
 import com.peckish.repository.ChatRepository;
 import com.peckish.service.ChatService;
+import com.peckish.service.PapagoTranslationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class ChatController {
     public Room findRoomById(Long roomId) {
         return chatRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException("Room not found: " + roomId));
     }
+
 
 
 }

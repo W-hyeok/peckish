@@ -35,6 +35,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         String payload = message.getPayload();
         log.info("받은 메시지!!!: {}", payload);
 
+        // 받은 메시지를 MsgDTO 변환
         MsgDTO msgDTO = ChatUtil.Chat.resolvePayload(payload);
         Long roomId = msgDTO.getROOM_ID();
         String content = msgDTO.getCONTENT();
@@ -47,20 +48,23 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         Map<String, String> translatedMessages = new HashMap<>();
         translatedMessages.put("original", content); // 원본 메시지 저장
 
-        // 선택된 언어에 맞춰 번역 (Papago API 호출)
-        String[] languages = new String[]{"ko", "en", "ch", "ja"}; // 예시로 한국어, 영어, 중국어로 번역
-        for (String lang : languages) {
-            if (!lang.equals(selectedLanguage)) { // 원본 언어와 다를 때만 번역
-                if (lang.equals("ch")) {
-                    lang = "zh-CN";
-                }
-                String translatedText = papagoTranslationService.translateText(content, lang);
-                translatedMessages.put(lang, translatedText);
+        // 지원 언어 전체에 대해 번역 수행
+        String[] supportedLanguages = new String[]{"ko", "en", "ch", "ja"};
+        for (String lang : supportedLanguages) {
+            String targetLang = lang;
+            // 중국어의 경우 API에서는 "zh-CN"을 사용
+            if (lang.equals("ch")) {
+                targetLang = "zh-CN";
             }
+            String translatedText = papagoTranslationService.translateText(content, targetLang);
+            translatedMessages.put(lang, translatedText);
         }
 
         // 번역된 메시지를 MsgDTO에 추가
         msgDTO.setTranslatedMessage(translatedMessages);
+
+        // 로그 출력: 번역된 메시지 확인
+        log.info("번역된 메시지: {}", msgDTO.getTranslatedMessage());
 
         // 메시지를 DB에 저장 (번역된 내용 포함)
         chatService.handleAction(roomId, session, msgDTO);
