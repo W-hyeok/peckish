@@ -74,8 +74,7 @@ public class MemberController {
         MemberResponseDTO oldDTO = memberService.getMemberByEmail(email); // DB에 저장된 이전 멤버 정보 조회
         // 있으면 기존거 지우고 없으면 기존 유지
         if (memberFormModifyInfoDTO.getCertiImg() != null) {
-            String oldCertiFilename = oldDTO.getCertiFilename(); // 기존 프로필 파일명
-
+            String oldCertiFilename = oldDTO.getCertiFilename(); // 기존 사업자 등록증 파일명
             // 실재 파일 삭제
             fileUtil.deleteOneFile(oldCertiFilename);
             MultipartFile newCertiImg = memberFormModifyInfoDTO.getCertiImg(); // 새로 업로드할 프로필 사진
@@ -85,11 +84,18 @@ public class MemberController {
             log.info("memberFormDTO: {}", memberFormModifyInfoDTO.toString());
         }
 
+        if (memberFormModifyInfoDTO.getMemberType().equals("USER")) {
+            String oldCertiFilename = oldDTO.getCertiFilename();
+            if (oldCertiFilename != null) {
+                // 실재 파일 삭제
+                fileUtil.deleteOneFile(oldCertiFilename);
+            }
+        }
+
         memberService.modifyMemberInfoService(memberFormModifyInfoDTO);
 
         return email;
     }
-
 
     // 카카오 멤버 정보 수정
     @PutMapping("/modify/kakao/{email}")

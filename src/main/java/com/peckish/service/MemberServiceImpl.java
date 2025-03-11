@@ -170,7 +170,18 @@ public class MemberServiceImpl implements MemberService {
         // 수정한 내용으로 기존 정보 업데이트
         findmember.changeNickname(memberFormModifyInfoDTO.getNickname());
         findmember.changePhone(memberFormModifyInfoDTO.getPhone());
+        findmember.changeBusinessNumber(memberFormModifyInfoDTO.getBusinessNumber());
         findmember.changeUpdateDate(memberFormModifyInfoDTO.getUpdateDate());
+
+        if (memberFormModifyInfoDTO.getMemberType().equals("OWNER")) {
+            findmember.addRole(Role.OWNER); // 사업자 권한
+            findmember.changeMemberStat(2);
+        }
+
+        if (memberFormModifyInfoDTO.getMemberType().equals("USER")) {
+            findmember.removeRole(Role.OWNER); // 사업자 권한
+            findmember.changeMemberStat(1);
+        }
 
         if (memberFormModifyInfoDTO.getCertiImg() != null) {
             findmember.changeCertiFilename(memberFormModifyInfoDTO.getCertiFilename());
