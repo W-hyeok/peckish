@@ -106,7 +106,8 @@ public class FileUtil {
     public ResponseEntity<Resource> getFile(String filename) {
         Resource resource = new FileSystemResource(uploadPath + File.separator + filename);
         if(!resource.isReadable()) {
-            resource = new FileSystemResource(uploadPath + File.separator + "default.jpg");
+//            resource = new FileSystemResource(uploadPath + File.separator + "default.jpg");
+            resource = new FileSystemResource(uploadPath + File.separator + "defaultProfile.png");
         }
 
         HttpHeaders headers = new HttpHeaders();
