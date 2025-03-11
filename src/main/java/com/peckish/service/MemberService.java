@@ -27,6 +27,7 @@ public interface MemberService {
                 member.getPassword(),
                 member.getNickname(),
                 member.getPhone(),
+                member.getBusinessNumber(),
                 member.getProfileFilename(),
                 member.getCertiFilename(),
                 member.isSocial(),
@@ -41,7 +42,7 @@ public interface MemberService {
     void modifyMember(MemberModifyDTO memberModifyDTO);
 
     // 회원 일반정보 수정
-    void modifyMemberInfoService(MemberFormModifyInfoDTO memberFormModifyInfoDTO);
+    String modifyMemberInfoService(MemberFormModifyInfoDTO memberFormModifyInfoDTO);
 
     // 카카오 회원 정보 수정
     void modifyMemberKakaoService(MemberFormModifyKakaoDTO memberFormModifyKakaoDTO);

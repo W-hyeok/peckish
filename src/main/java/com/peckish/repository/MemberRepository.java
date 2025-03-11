@@ -31,8 +31,8 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     void updateToDeleteMember(@Param("email") String email, @Param("memberStat") int memberStat);
 
     Boolean existsByEmail(String email);
-
     Boolean existsByPhone(String phone);
+    Boolean existsByBusinessNumber(String businessNumber);
 
     // shopList 정보 가져오기 구현
     @Query("SELECT su FROM ShopUser su WHERE su.shop.email = :email")
@@ -51,6 +51,7 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Modifying(clearAutomatically = true)
     @Query("UPDATE ShopOwner so SET so.isOpen = false WHERE so.shop.email = :email")
     void closeShopAtRepository(@Param("email") String email);
+
 
 
 }

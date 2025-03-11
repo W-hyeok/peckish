@@ -67,7 +67,7 @@ public class MemberController {
 
     // 멤버 일반 정보 수정
     @PutMapping("/modify/{email}")
-    public String modifyMemberInfo(@PathVariable(name="email") String email, MemberFormModifyInfoDTO memberFormModifyInfoDTO) {
+    public Map<String, String> modifyMemberInfo(@PathVariable(name="email") String email, MemberFormModifyInfoDTO memberFormModifyInfoDTO) {
         log.info("modify - 일반 정보 수정: {}", memberFormModifyInfoDTO.toString());
 
         memberFormModifyInfoDTO.setEmail(email);
@@ -92,9 +92,9 @@ public class MemberController {
             }
         }
 
-        memberService.modifyMemberInfoService(memberFormModifyInfoDTO);
+        String result = memberService.modifyMemberInfoService(memberFormModifyInfoDTO);
 
-        return email;
+        return Map.of("RESULT", result);
     }
 
     // 카카오 멤버 정보 수정

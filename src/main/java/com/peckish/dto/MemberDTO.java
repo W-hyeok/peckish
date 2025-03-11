@@ -15,6 +15,7 @@ public class MemberDTO extends User {
     private String password;
     private String nickname;
     private String phone;
+    private String businessNumber;
     private String profileFilename;
     private String certiFilename;
     private boolean social;
@@ -24,7 +25,7 @@ public class MemberDTO extends User {
     private List<String> roleNames = new ArrayList<>(); // 롤 이름만 저장
 
     // 생성자
-    public MemberDTO(String email, String password, String nickname, String phone, String profileFilename, String certiFilename, boolean social, int memberStat, List<String> roleNames) {
+    public MemberDTO(String email, String password, String nickname, String phone, String businessNumber, String profileFilename, String certiFilename, boolean social, int memberStat, List<String> roleNames) {
         super(email, password, roleNames.stream()
                 .map(str -> new SimpleGrantedAuthority("ROLE_" + str))
                 .collect(Collectors.toList()));
@@ -32,6 +33,7 @@ public class MemberDTO extends User {
         this.password = password;
         this.nickname = nickname;
         this.phone = phone;
+        this.businessNumber = businessNumber;
         this.profileFilename = profileFilename;
         this.certiFilename = certiFilename;
         this.social = social;
@@ -46,6 +48,7 @@ public class MemberDTO extends User {
         claims.put("password", password); // 비번은 원래 빼야함 -> 뷰에 전달X -> 예제라 확인차 추가
         claims.put("nickname", nickname);
         claims.put("phone", phone);
+        claims.put("businessNumber", businessNumber);
         claims.put("profileFilename", profileFilename);
         claims.put("certiFilename", certiFilename);
         claims.put("social", social);

@@ -112,6 +112,7 @@ public class AdminServiceImpl implements AdminService {
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .phone(member.getPhone())
+                .businessNumber(member.getBusinessNumber())
                 .profileFilename(member.getProfileFilename())
                 .certiFilename(member.getCertiFilename())
                 .social(member.isSocial())

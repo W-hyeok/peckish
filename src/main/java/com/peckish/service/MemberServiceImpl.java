@@ -60,13 +60,17 @@ public class MemberServiceImpl implements MemberService {
 
         Boolean isExist = memberRepository.existsByEmail(memberFormDTO.getEmail());
         Boolean isExistPhone = memberRepository.existsByPhone(memberFormDTO.getPhone());
-
         if (isExist) {
             return "existMember";
         } else if (isExistPhone) {
             return "existPhone";
         }
-
+        if (memberFormDTO.getBusinessNumber() != null) {
+            Boolean isExistBusinessNumber = memberRepository.existsByBusinessNumber(memberFormDTO.getBusinessNumber());
+            if (isExistBusinessNumber) {
+                return "existBusinessNumber";
+            }
+        }
         // FormDTO를 Entity로 변환 후 저장
         Member member = dtoToEntity(memberFormDTO);
         Member savedMember = memberRepository.save(member); // 작성 정보 DB에 저장
@@ -162,34 +166,45 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void modifyMemberInfoService(MemberFormModifyInfoDTO memberFormModifyInfoDTO) {
+    public String modifyMemberInfoService(MemberFormModifyInfoDTO memberFormModifyInfoDTO) {
 
         // email로 기존 회원 정보 조회
         Member findmember = memberRepository.getMemberWithRoles(memberFormModifyInfoDTO.getEmail());
 
-        // 수정한 내용으로 기존 정보 업데이트
-        findmember.changeNickname(memberFormModifyInfoDTO.getNickname());
-        findmember.changePhone(memberFormModifyInfoDTO.getPhone());
-        findmember.changeBusinessNumber(memberFormModifyInfoDTO.getBusinessNumber());
-        findmember.changeUpdateDate(memberFormModifyInfoDTO.getUpdateDate());
-
         if (memberFormModifyInfoDTO.getMemberType().equals("OWNER")) {
             findmember.addRole(Role.OWNER); // 사업자 권한
             findmember.changeMemberStat(2);
+            // 수정한 내용으로 기존 정보 업데이트
+            findmember.changeNickname(memberFormModifyInfoDTO.getNickname());
+            findmember.changePhone(memberFormModifyInfoDTO.getPhone());
+            findmember.changeBusinessNumber(memberFormModifyInfoDTO.getBusinessNumber());
+            findmember.changeUpdateDate(memberFormModifyInfoDTO.getUpdateDate());
         }
 
         if (memberFormModifyInfoDTO.getMemberType().equals("USER")) {
             findmember.removeRole(Role.OWNER); // 사업자 권한
             findmember.changeMemberStat(1);
+            // 수정한 내용으로 기존 정보 업데이트
+            findmember.changeNickname(memberFormModifyInfoDTO.getNickname());
+            findmember.changePhone(memberFormModifyInfoDTO.getPhone());
+            findmember.changeBusinessNumber(null);
+            findmember.changeUpdateDate(memberFormModifyInfoDTO.getUpdateDate());
         }
 
         if (memberFormModifyInfoDTO.getCertiImg() != null) {
             findmember.changeCertiFilename(memberFormModifyInfoDTO.getCertiFilename());
         }
 
+        Boolean isExistBusinessNumber = memberRepository.existsByBusinessNumber(memberFormModifyInfoDTO.getBusinessNumber());
+
+        if (isExistBusinessNumber) {
+            return "existBusinessNumber";
+        }
+        
         // 수정된 정보 DB에 저장
         memberRepository.save(findmember);
-
+         
+        return findmember.getEmail(); // 수정된 회원 이메일 반환
     }
 
     @Override
