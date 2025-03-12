@@ -2,6 +2,7 @@ package com.peckish.service;
 
 import com.peckish.domain.*;
 import com.peckish.dto.ReviewFormDTO;
+import com.peckish.dto.ReviewRespDTO;
 import com.peckish.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ReviewServierImpl implements ReviewService {
 
+    private final ShopService shopservice;
     private final ReviewUserRepository reviewUserRepository;
     private final ReviewOwnerRepository reviewOwnerRepository;
     private final ShopUserRepository shopUserRepository;
@@ -22,7 +26,7 @@ public class ReviewServierImpl implements ReviewService {
     private final ShopRepository shopRepository;
     private final ShopOwnerRepository shopOwnerRepository;
 
-
+    // 리뷰 등록
     @Override
     public Long add(Long shopId, String infoType, ReviewFormDTO reviewFormDTO) {
         log.info("리뷰 등록 - ReviewFormDTO : {}", reviewFormDTO);
@@ -67,12 +71,87 @@ public class ReviewServierImpl implements ReviewService {
 
             ReviewOwner save = reviewOwnerRepository.save(reviewOwnerEntity);
             savedId = save.getReviewOwnerId();
-
-
         }
-
-
-
         return savedId;
     }
+    // User - 리뷰조회
+    @Override
+    public List<ReviewRespDTO> getReviewUser(Long shopId) {
+        log.info("getReviewUser - shopId : {}", shopId);
+
+       ShopUser shopUser = shopUserRepository.selectReviewUserByShopId(shopId);
+
+        if(!shopUser.getReviewUser().isEmpty()){
+            List<ReviewRespDTO> reviewUserList = shopUser.getReviewUser().stream()
+                    .map(reviewEntity -> new ReviewRespDTO(reviewEntity))
+                    .collect(Collectors.toList());
+            return reviewUserList;
+
+        }else {
+            return null;
+        }
+    }
+
+    // Owner - 리뷰조회
+    @Override
+    public List<ReviewRespDTO> getReviewOwner(Long shopId) {
+        log.info("getReviewOwner - shopId : {}", shopId);
+
+        ShopOwner shopOwner = shopOwnerRepository.selectReviewOwnerByShopId(shopId);
+
+        if(!shopOwner.getReviewOwner().isEmpty()){
+            List<ReviewRespDTO> reviewOwnerList = shopOwner.getReviewOwner().stream()
+                    .map(reviewEntity -> new ReviewRespDTO(reviewEntity))
+                    .collect(Collectors.toList());
+            return reviewOwnerList;
+        } else{
+            return null;
+        }
+    }
+
+    @Override
+    public Double updateShopUserRating(Long shopId) {
+        // User - Review List 가져와 rating 평균 구하기
+        ShopUser shopUser = shopUserRepository.selectReviewUserByShopId(shopId);
+
+        double avg = shopUser.getReviewUser().stream()
+                .mapToDouble(ReviewUser::getRating)
+                .average()
+                .orElse(0.0);
+        shopUser.setRatingAvg(avg);
+        shopUserRepository.save(shopUser);
+        return avg;
+    }
+
+    @Override
+    public Double findOwnerRatingAvg(Long shopId) {
+        // Owner - Review List 가져와 rating 평균 구하기
+        ShopOwner shopOwner = shopOwnerRepository.selectReviewOwnerByShopId(shopId);
+
+        double avg = shopOwner.getReviewOwner().stream()
+                .mapToDouble(ReviewOwner::getRating)
+                .average()
+                .orElse(0.0);
+        shopOwner.setRatingAvg(avg);
+        shopOwnerRepository.save(shopOwner);
+        return avg;
+    }
+
+    @Override
+    public void deleteReview(Long reviewId) {
+
+
+
+
+    }
+
+
+    // 리뷰 수정
+
+
+    // 리뷰 삭제
+
+
+
+
 }

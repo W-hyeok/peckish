@@ -5,6 +5,7 @@ import com.peckish.dto.*;
 import com.peckish.repository.ShopRepository;
 import com.peckish.service.MapService;
 import com.peckish.service.MemberService;
+import com.peckish.service.ReviewService;
 import com.peckish.service.ShopService;
 import com.peckish.util.FileUtil;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class ShopController {
 
     private final FileUtil fileUtil;
     private final ShopService shopService;
+    private final ReviewService reviewService;
     private final MapService mapService;
     private final MemberService memberService;
     private final ShopRepository shopRepository;
@@ -128,23 +130,33 @@ public class ShopController {
     }
 
 
-    //상점,메뉴 1개 조회
+    // Shop 정보 - 상점,메뉴,리뷰 1개 조회
     @GetMapping("/detail/{shopId}")
     public Map<String, ShopDetailRespDTO> getShop(@PathVariable("shopId") Long shopId) {
         log.info("/shop/detail/shopId - shopId : {} ", shopId);
 
-        // shop 정보가져오기 : Shop, ShopUser, ShopOwner 들어있음 (메뉴는 아직)
+        // shop 정보가져오기 : Shop, ShopUser, ShopOwner 들어있음
         ShopDTO shopDTO = shopService.getShop(shopId);
+
         List<MenuRespDTO> shopUserMenu = null;
         List<MenuRespDTO> shopOwnerMenu = null;
+        List<ReviewRespDTO> shopUserReview = null;
+        List<ReviewRespDTO> shopOwnerReview = null;
+        Double UserAverage = null;
+        Double OwnerAverage = null;
 
         // shopUser가 있으면 메뉴 가져와봐
         if (shopDTO.isUserData()) {
             shopUserMenu = shopService.getShopUserMenu(shopId);
+            shopUserReview = reviewService.getReviewUser(shopId);
+            //UserAverage =
+
         }
         // shopOwner가 있으면 메뉴 가져와봐
         if (shopDTO.isOwnerData()) {
             shopOwnerMenu = shopService.getShopOwnerMenu(shopId);
+            shopOwnerReview = reviewService.getReviewOwner(shopId);
+            //OwnerAverage = reviewService.findBy
         }
 
         // 화면에 전달해줄 데이터를 RespDTO로 취합
@@ -154,8 +166,10 @@ public class ShopController {
                 .shopOwnerDTO(shopDTO.getShopOwnerDTO())
                 .menuUserList(shopUserMenu)
                 .menuOwnerList(shopOwnerMenu)
+                .reviewUserList(shopUserReview)
+                .reviewOwnerList(shopOwnerReview)
+                //.ratingAvg(average)
                 .build();
-
 
         log.info("shopResp : {}", shop);
         return Map.of("RESULT", shop);

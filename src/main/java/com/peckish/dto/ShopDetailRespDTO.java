@@ -18,12 +18,14 @@ public class ShopDetailRespDTO {
     // shop
     //@NonNull
     private ShopDTO shopDTO;
-    // shopOwner + menu
+
+    // shopOwner + menu + review
     private ShopOwnerDTO shopOwnerDTO;
     private List<MenuRespDTO> menuOwnerList;
-    // shopUser + menu
+    private List<ReviewRespDTO> reviewOwnerList;
+
+    // shopUser + menu + review
     private ShopUserDTO shopUserDTO;
     private List<MenuRespDTO> menuUserList;
-
-
+    private List<ReviewRespDTO> reviewUserList;
 }

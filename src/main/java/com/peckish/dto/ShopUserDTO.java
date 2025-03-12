@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShopUserDTO {
-    private Long shopUserId; //작성자
+    private Long shopUserId; //pk
 
     private Long shopId; //상점번호
     private boolean isExist; //삭제 여부

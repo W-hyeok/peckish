@@ -26,23 +26,6 @@ public class MenuOwnerDTO {
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
 
-/*
-    //DTO -> MenuOwnerEntity
-    public MenuOwner toMenuOwnerEntity() {
-        MenuOwner menuOwner = MenuOwner.builder()
-                .menuName(menuName)
-                .price(price)
-                .active(true)
-                .regDate(regDate)
-                .updateDate(updateDate)
-                .build();
-        return menuOwner;
-
-
-    }
-
- */
-
     //Entity -> DTO toMenuUserDTO = DB에서 조회한 내용을 DTO로 변환 -> 화면에 전달 목적 큼
     public MenuOwnerDTO (MenuOwner menuOwner) {
 

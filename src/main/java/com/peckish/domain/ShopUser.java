@@ -17,6 +17,10 @@ public class ShopUser {
     @Column(name="SHOP_USER_ID")
     private Long shopUserId;
 
+    // 상점 별점 평균
+    @Setter
+    private Double ratingAvg;
+
     private String title;
     private String location;
     private String days;
@@ -31,9 +35,15 @@ public class ShopUser {
     @Builder.Default
     private String infoType = "USER";  // User
 
+    // 메뉴
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopUser")
     @Builder.Default
     private List<MenuUser> menuUser = new ArrayList<>();
+
+    // 리뷰
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopUser")
+    @Builder.Default
+    private List<ReviewUser> reviewUser = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY) // Member:Shop=N:1 // 기본값 EAGER
     @JoinColumn(name="email") // join 할(= 반대편의) 컬럼명

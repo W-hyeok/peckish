@@ -17,6 +17,10 @@ public class ShopOwner {
     @Column(name="SHOP_OWNER_ID") // join 대상 컬럼명 지정
     private Long shopOwnerId;
 
+    // 상점 별점 평균
+    @Setter
+    private Double ratingAvg;
+
     private String title;
     private String location;
     private String days;
@@ -40,11 +44,17 @@ public class ShopOwner {
     @JoinColumn(name="email") // join 할(= 반대편의) 컬럼명
     @Setter
     private Member member;
-
+    
+    // 메뉴 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopOwner")
     @Builder.Default
     private List<MenuOwner> menuOwner = new ArrayList<>();
 
+    // 리뷰
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopOwner")
+    @Builder.Default
+    private List<ReviewOwner> reviewOwner = new ArrayList<>();
+    
     // 수정 : regDate 제외한 모든 데이터 수정
     public void changeTitle(String title){
         this.title=title;
@@ -70,5 +80,7 @@ public class ShopOwner {
     }
     public void changeisExist(boolean isExist) {this.isExist=isExist;}
     public void changeIsOpen(boolean isOpen) {this.isOpen=isOpen;}
+
+
 
 }
