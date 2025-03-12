@@ -38,6 +38,10 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Query("SELECT su FROM ShopUser su WHERE su.shop.email = :email")
     List<ShopUser> findAllByEmail(@Param("email") String email);
 
+    // memberList 정보 가져오기 구현
+    @Query("SELECT m FROM Member m WHERE m.businessNumber = :businessNumber")
+    List<Member> findAllByBusinessNumber(@Param("businessNumber") String businessNumber);
+
     // shop 정보 가져오기 구현 중
     @Query("SELECT s FROM Shop s WHERE s.email = :email")
     Shop findOneShopByEmail(@Param("email") String email);
@@ -52,6 +56,7 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Query("UPDATE ShopOwner so SET so.isOpen = false WHERE so.shop.email = :email")
     void closeShopAtRepository(@Param("email") String email);
 
-
-
+    @EntityGraph(attributePaths = {"roleList"}) // Member 조회 시 연관시킬 경로
+    @Query("SELECT m FROM Member m WHERE m.businessNumber = :businessNumber") // JPQL: Member(Entity)에서 사용자 조회
+    Member getMemberWithRolesByBusinessNumber(String businessNumber); // 연관된 roleList도 함께(left join) 조회
 }

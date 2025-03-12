@@ -1,5 +1,6 @@
 package com.peckish.repository;
 
+import com.peckish.domain.ReviewUser;
 import com.peckish.domain.ShopUser;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +15,7 @@ public interface ShopUserRepository extends JpaRepository<ShopUser, Long> {
     @Query("select user from ShopUser user where user.shop.shopId = :shopId")
     public ShopUser selectShopUserByShopId(@Param("shopId") Long shopId);
 
-
+    @EntityGraph(attributePaths = {"reviewUser"})
+    @Query("select user from ShopUser user where user.shop.shopId = :shopId")
+    public ShopUser selectReviewUserByShopId(@Param("shopId") Long shopId);
 }

@@ -19,9 +19,8 @@ public class Review {
     @Column(name="REVIEW_ID")
     private Long reviewId;
 
-    private String nickname;
-    private String reviewCont;
-    private Long score;
+    private String content;
+    private Long rating;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
 

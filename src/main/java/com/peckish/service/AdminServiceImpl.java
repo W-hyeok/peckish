@@ -86,6 +86,7 @@ public class AdminServiceImpl implements AdminService {
                 .nickname(member.getNickname())
                 .memberStat(member.getMemberStat())
                 .phone(member.getPhone())
+                .businessNumber(member.getBusinessNumber())
                 .profileFilename(member.getProfileFilename())
                 .certiFilename(member.getCertiFilename())
                 .regDate(member.getRegDate()
