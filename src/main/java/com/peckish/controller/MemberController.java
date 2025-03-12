@@ -65,6 +65,15 @@ public class MemberController {
         return memberService.getMemberByPhone(phone);
     }
 
+    // 멤버 여러명 조회 (사업자 등록증 번호로 조회하기 for 중복 검사) : 일단 한명은 있고 그 이상이면 중복 번호임
+    @GetMapping("/businessNumber/{businessNumber}")
+    public List<MemberResponseDTO> getMemberByBusinessNumber(@PathVariable("businessNumber") String businessNumber) {
+        List<MemberResponseDTO> memberResponseDTOs = memberService.getMembersByBusinessNumber(businessNumber);
+
+        log.info("@#$#$%@$%^%: {}", memberResponseDTOs.toString());
+        return memberResponseDTOs;
+    }
+
     // 멤버 일반 정보 수정
     @PutMapping("/modify/{email}")
     public Map<String, String> modifyMemberInfo(@PathVariable(name="email") String email, MemberFormModifyInfoDTO memberFormModifyInfoDTO) {
