@@ -103,6 +103,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
+
+
     // Member(Entity) → MemberResponseDTO 변환 메서드
     private MemberResponseDTO entityToMemberResponseDTO(Member member) {
         MemberResponseDTO memberResponseDTO = MemberResponseDTO.builder()
@@ -309,6 +311,17 @@ public class MemberServiceImpl implements MemberService {
         return list;
     }
 
+    @Override
+    public List<MemberResponseDTO> getMembersByBusinessNumber(String businessNumber) {
+        // 사업자 등록번호 일치하는 멤버들 조회
+        List<Member> members = memberRepository.findAllByBusinessNumber(businessNumber);
+        // 조회된 Member Entity를 MemberDTO로 변환
+        List<MemberResponseDTO> memberList = members.stream()
+                .map(member -> new MemberResponseDTO(member))
+                .collect(Collectors.toList());
+
+        return memberList;
+    }
     @Override
     public ShopDTO getShopByEmail(String email) {
         // 1. Shop : email로 shop 정보 가져오기
