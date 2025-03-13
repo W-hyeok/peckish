@@ -1,5 +1,5 @@
 package com.peckish.domain;
 
 public enum MsgStatus {
-     ACTIVE, INACTIVE
+     ACTIVE, INACTIVE, READ, UNREAD
 }

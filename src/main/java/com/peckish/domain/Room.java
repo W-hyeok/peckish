@@ -14,13 +14,11 @@ import java.time.LocalDateTime;
 @ToString
 public class Room {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ROOM_ID;
 
     private String ROOM_NAME;
-    private String CONTENT;
     @Enumerated(EnumType.STRING)
     private RoomType TYPE;
     private Long ROOM_LIMIT;
