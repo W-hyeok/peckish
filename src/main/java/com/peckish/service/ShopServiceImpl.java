@@ -37,7 +37,8 @@ public class ShopServiceImpl implements ShopService {
         Shop savedShop = shopRepository.save(shopEntity);
 
         Member member = memberRepository.findById(shopDetailDTO.getEmail()).orElseThrow();
-
+        log.info("멤버 정보? {}", member);
+        // Member(email=owner@owner.com, nickname=테스트사장, phone=010-1111-2222 social=false, memberStat=1
         //Menu savedMenu = menuOwnerRepository.save(menuEntity);
         //Menu savedMenu = menuUserRepository.save(menu)
 
@@ -47,6 +48,8 @@ public class ShopServiceImpl implements ShopService {
             // 사장으로 처리
             ShopOwner shopOwnerEntity = shopDetailDTO.toShopOwnerEntity();
             savedShop.changeOwnerData(true); // 사장데이터 있다
+            /* todo: member column update - isOwned false → true */
+            memberRepository.updateIsOwned(member.getEmail());
             shopOwnerEntity.setMember(member);
             shopOwnerEntity.setShop(savedShop); // 저장한 위 Shop엔티티 추가
             Map mapEntity = mapDTO.toEntity(); // 사장이 작성한 map 정보 DB -> Entity

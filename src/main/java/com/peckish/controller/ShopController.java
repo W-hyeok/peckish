@@ -32,7 +32,7 @@ public class ShopController {
     private final ShopRepository shopRepository;
 
 
-    //상점 등록
+    // 상점 등록
     @PostMapping("/add")
     public Map<String, Long> shopAdd(ShopDTO shopDTO, ShopDetailDTO shopDetailDTO, MapDTO mapDTO) {
 

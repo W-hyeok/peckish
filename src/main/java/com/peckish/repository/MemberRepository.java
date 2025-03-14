@@ -59,4 +59,9 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @EntityGraph(attributePaths = {"roleList"}) // Member 조회 시 연관시킬 경로
     @Query("SELECT m FROM Member m WHERE m.businessNumber = :businessNumber") // JPQL: Member(Entity)에서 사용자 조회
     Member getMemberWithRolesByBusinessNumber(String businessNumber); // 연관된 roleList도 함께(left join) 조회
+
+    // 인증 여부 true로 변경
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Member SET owned = true WHERE email = :email")
+    void updateIsOwned(String email);
 }

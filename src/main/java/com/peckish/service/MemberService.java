@@ -31,6 +31,7 @@ public interface MemberService {
                 member.getProfileFilename(),
                 member.getCertiFilename(),
                 member.isSocial(),
+                member.isOwned(),
                 member.getMemberStat(),
                 member.getRoleList().stream()
                         .map(role -> role.name())

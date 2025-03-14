@@ -23,9 +23,12 @@ public class MemberDTO extends User {
     //    private LocalDateTime regDate;
 //    private LocalDateTime updateDate;
     private List<String> roleNames = new ArrayList<>(); // 롤 이름만 저장
+    private boolean owned;
 
     // 생성자
-    public MemberDTO(String email, String password, String nickname, String phone, String businessNumber, String profileFilename, String certiFilename, boolean social, int memberStat, List<String> roleNames) {
+    public MemberDTO(String email, String password, String nickname, String phone,
+                     String businessNumber, String profileFilename, String certiFilename, boolean owned,
+                     boolean social, int memberStat, List<String> roleNames ) {
         super(email, password, roleNames.stream()
                 .map(str -> new SimpleGrantedAuthority("ROLE_" + str))
                 .collect(Collectors.toList()));
@@ -39,6 +42,7 @@ public class MemberDTO extends User {
         this.social = social;
         this.memberStat = memberStat;
         this.roleNames = roleNames;
+        this.owned = owned;
     }
 
     // JWT 를 위한 메서드 : 현재 사용자 정보 Map 타입으로 리턴
@@ -54,6 +58,7 @@ public class MemberDTO extends User {
         claims.put("social", social);
         claims.put("memberStat", memberStat);
         claims.put("roleNames", roleNames);
+        claims.put("owned", owned);
 
         return claims;
     }

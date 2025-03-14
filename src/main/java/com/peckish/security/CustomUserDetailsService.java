@@ -30,7 +30,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Email(username) Not Found");
         }
         // Member → MemberDTO로 변환 (MemberDTO는 SpringSecurity가 요구하는 UserDetails 타입임)
-        MemberDTO memberDTO =  new MemberDTO(member.getEmail(), member.getPassword(), member.getNickname(), member.getPhone(), member.getBusinessNumber(), member.getProfileFilename(), member.getCertiFilename(), member.isSocial(), member.getMemberStat(), member.getRoleList()
+        MemberDTO memberDTO =  new MemberDTO(member.getEmail(), member.getPassword(), member.getNickname(), member.getPhone(),
+                member.getBusinessNumber(), member.getProfileFilename(), member.getCertiFilename(), member.isOwned(),
+                member.isSocial(), member.getMemberStat(), member.getRoleList()
                 .stream() // stream<Role>. (배열(<Role>) 요소를 순차적/병렬적으로 처리하기 위해 stream() 사용)
                 .map(role -> role.name()) // Stream<String>. Role Enum을 String으로 변환
                 .collect(Collectors.toList())); // List로 변환

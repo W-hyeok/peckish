@@ -25,6 +25,7 @@ public class Member {
     private String certiFilename;
     private boolean social; // 소셜 회원 여부
     private int memberStat; // 회원 활동 여부
+    private boolean owned; // 사업자 회원 - '인증 점포' 등록 여부
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
 
@@ -73,6 +74,9 @@ public class Member {
     public void changeCertiFilename(String certiFilename) {
         this.certiFilename = certiFilename;
     }
+
+    // isOwned 변경
+    public void changeOwned(boolean owned) { this.owned = owned; }
 
     // 소셜 회원(로그인) 여부 변경
     public void changeSocial(boolean social) {

@@ -70,11 +70,12 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             String profileFilename = (String) claims.get("profileFilename");
             String certiFilename = (String) claims.get("certiFilename");
             Boolean social = (Boolean) claims.get("social");
+            Boolean owned = (Boolean) claims.get("owned");
             int memberStat = (int) claims.get("memberStat");
             List<String> roleNames = (List<String>) claims.get("roleNames");
 
             // AccessToken에 저장된 사용자 정보를 꺼내어 MemberDTO(UserDetails 타입)에 정보 담아 객체 생성
-            MemberDTO memberDTO = new MemberDTO(email, password, nickname, phone, businessNumber, profileFilename, certiFilename, social, memberStat, roleNames);
+            MemberDTO memberDTO = new MemberDTO(email, password, nickname, phone, businessNumber, profileFilename, certiFilename, social, owned, memberStat, roleNames);
             log.info(" JWT Check Filter - doFilterInternal - MemberDTO: {}", memberDTO);
 
             // Security 전용 인증 토큰
