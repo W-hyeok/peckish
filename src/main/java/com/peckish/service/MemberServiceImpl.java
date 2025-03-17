@@ -172,6 +172,7 @@ public class MemberServiceImpl implements MemberService {
 
         // email로 기존 회원 정보 조회
         Member findmember = memberRepository.getMemberWithRoles(memberFormModifyInfoDTO.getEmail());
+        log.info("****** 정보 수정 *********: {}", memberFormModifyInfoDTO.getMemberType().toString());
 
         if (memberFormModifyInfoDTO.getMemberType().equals("OWNER")) {
             findmember.addRole(Role.OWNER); // 사업자 권한
@@ -181,6 +182,11 @@ public class MemberServiceImpl implements MemberService {
             findmember.changePhone(memberFormModifyInfoDTO.getPhone());
             findmember.changeBusinessNumber(memberFormModifyInfoDTO.getBusinessNumber());
             findmember.changeUpdateDate(memberFormModifyInfoDTO.getUpdateDate());
+
+            Boolean isExistBusinessNumber = memberRepository.existsByBusinessNumber(memberFormModifyInfoDTO.getBusinessNumber());
+                if (isExistBusinessNumber) {
+                    return "existBusinessNumber";
+                }
         }
 
         if (memberFormModifyInfoDTO.getMemberType().equals("USER")) {
@@ -193,15 +199,14 @@ public class MemberServiceImpl implements MemberService {
             findmember.changeUpdateDate(memberFormModifyInfoDTO.getUpdateDate());
         }
 
+        if (memberFormModifyInfoDTO.getProfileImg() != null) {
+            findmember.changeProfileFilename(memberFormModifyInfoDTO.getProfileFilename());
+        }
         if (memberFormModifyInfoDTO.getCertiImg() != null) {
             findmember.changeCertiFilename(memberFormModifyInfoDTO.getCertiFilename());
         }
 
-        Boolean isExistBusinessNumber = memberRepository.existsByBusinessNumber(memberFormModifyInfoDTO.getBusinessNumber());
 
-        if (isExistBusinessNumber) {
-            return "existBusinessNumber";
-        }
         
         // 수정된 정보 DB에 저장
         memberRepository.save(findmember);

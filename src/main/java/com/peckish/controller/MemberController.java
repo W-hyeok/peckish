@@ -81,12 +81,23 @@ public class MemberController {
 
         memberFormModifyInfoDTO.setEmail(email);
         MemberResponseDTO oldDTO = memberService.getMemberByEmail(email); // DB에 저장된 이전 멤버 정보 조회
+
         // 있으면 기존거 지우고 없으면 기존 유지
+        if (memberFormModifyInfoDTO.getProfileImg() != null) {
+            String oldProfileFilename = oldDTO.getProfileFilename(); // 기존 프로필 이미지 파일명
+            // 실재 파일 삭제
+            fileUtil.deleteOneFile(oldProfileFilename);
+            MultipartFile newProfileImg = memberFormModifyInfoDTO.getProfileImg(); // 변경할 프로필 사진
+            String newProfileFilename = fileUtil.saveFile(newProfileImg);
+            log.info("memberFormDTO: {}", memberFormModifyInfoDTO.toString());
+            memberFormModifyInfoDTO.setProfileFilename(newProfileFilename);
+            log.info("memberFormDTO: {}", memberFormModifyInfoDTO.toString());
+        }
         if (memberFormModifyInfoDTO.getCertiImg() != null) {
             String oldCertiFilename = oldDTO.getCertiFilename(); // 기존 사업자 등록증 파일명
             // 실재 파일 삭제
             fileUtil.deleteOneFile(oldCertiFilename);
-            MultipartFile newCertiImg = memberFormModifyInfoDTO.getCertiImg(); // 새로 업로드할 프로필 사진
+            MultipartFile newCertiImg = memberFormModifyInfoDTO.getCertiImg(); // 변경할 사업자 등록즐 사진
             String newCertiFilename = fileUtil.saveFile(newCertiImg); // 새로운 파일명
             log.info("memberFormDTO: {}", memberFormModifyInfoDTO.toString());
             memberFormModifyInfoDTO.setCertiFilename(newCertiFilename);;

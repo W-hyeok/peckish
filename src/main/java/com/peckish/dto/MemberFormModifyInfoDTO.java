@@ -20,6 +20,8 @@ public class MemberFormModifyInfoDTO {
     private String nickname;
     private String phone;
     private String businessNumber;
+    private MultipartFile profileImg;
+    private String profileFilename;
     private MultipartFile certiImg;
     private String certiFilename;
     private String memberType;

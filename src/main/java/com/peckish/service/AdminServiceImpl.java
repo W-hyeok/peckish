@@ -89,9 +89,12 @@ public class AdminServiceImpl implements AdminService {
                 .businessNumber(member.getBusinessNumber())
                 .profileFilename(member.getProfileFilename())
                 .certiFilename(member.getCertiFilename())
-                .regDate(member.getRegDate()
-                )
+                .regDate(member.getRegDate())
+                .roleNames(member.getRoleList().stream()
+                        .map(role -> role.toString())
+                        .collect(Collectors.toList()))
                 .build();
+
         return memberResponseDTO;
     }
 
