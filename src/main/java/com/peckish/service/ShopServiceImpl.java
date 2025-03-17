@@ -393,6 +393,7 @@ public class ShopServiceImpl implements ShopService {
         ShopOwner shopOwner = shopOwnerRepository.findByShop_ShopId(shopId)
                 .orElseThrow(() -> new EntityNotFoundException("ShopId로 ShopOwner 정보를 찾을 수 없습니다. : " + shopId));
 
+        log.info("ShopId로 조회한 가게의 사장님 이메일 :{}",shopOwner.getMember().getEmail());
         return ShopOwnerDTO.builder()
                 .email(shopOwner.getMember().getEmail())  // ShopOwner 엔티티의 Member에서 이메일 추출
                 .build();

@@ -17,12 +17,8 @@ public class Msg {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long MSG_ID;
     private Long ROOM_ID;
-    private String USERNAME;
+    private String EMAIL;
     private String CONTENT;
-    private String KO;
-    private String EN;
-    private String JA;
-    private String CH;
 
     @Enumerated(EnumType.STRING)
     private MsgStatus STATUS;

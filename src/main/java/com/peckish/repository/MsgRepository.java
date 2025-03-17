@@ -17,7 +17,7 @@ public interface MsgRepository extends JpaRepository<Msg, Long> {
     @Query("SELECT m FROM Msg m WHERE m.ROOM_ID = :roomId AND m.STATUS = 'ACTIVE' ")
     List<Msg> findMsgsByRoomId(Long roomId);
 
-    @Query("SELECT COUNT(m) FROM Msg m WHERE m.ROOM_ID = :roomId AND m.STATUS = :unreadStatus AND m.USERNAME <> :ownerEmail")
+    @Query("SELECT COUNT(m) FROM Msg m WHERE m.ROOM_ID = :roomId AND m.STATUS = :unreadStatus AND m.EMAIL <> :ownerEmail")
     Long countUnreadMessages(@Param("roomId") Long roomId,
                              @Param("ownerEmail") String ownerEmail,
                              @Param("unreadStatus") MsgStatus unreadStatus);

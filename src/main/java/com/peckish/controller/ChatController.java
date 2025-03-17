@@ -4,9 +4,7 @@ import com.peckish.domain.Msg;
 import com.peckish.domain.Room;
 import com.peckish.repository.ChatRepository;
 import com.peckish.service.ChatService;
-import com.peckish.service.PapagoTranslationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -7,19 +7,16 @@ import com.peckish.domain.MsgStatus;
 import com.peckish.domain.Room;
 import com.peckish.dto.ChatRoom;
 import com.peckish.dto.MsgDTO;
-import com.peckish.dto.RoomListDTO;
 import com.peckish.repository.ChatRepository;
 import com.peckish.repository.MsgRepository;
 import com.peckish.util.ChatUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,8 +26,6 @@ import java.util.List;
 public class ChatService {
 
     private final ChatRepository chatRepository;
-    private final MsgRepository msgRepository;
-    private final PapagoTranslationService translationService;
     private final MsgService msgService;
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -83,30 +78,10 @@ public class ChatService {
         Msg msg = new Msg();
         msg.setROOM_ID(chatMsg.getROOM_ID());
         msg.setCONTENT(chatMsg.getCONTENT());
-        msg.setUSERNAME(chatMsg.getEmail());
+        msg.setEMAIL(chatMsg.getEmail());
         String msgType = String.valueOf(chatMsg.getMessageType());
         msg.setSTATUS(msgType.equals("TALK") ? MsgStatus.ACTIVE : MsgStatus.INACTIVE);
         msg.setREG_DATE(chatMsg.getReg_date());
-
-        // 언어 감지 후 번역 및 각 언어로 저장
-        String content = chatMsg.getCONTENT();
-
-        // 한국어 번역
-        String translatedKo = translationService.translateText(content, "ko");
-        msg.setKO(translatedKo);
-
-        // 영어 번역
-        String translatedEn = translationService.translateText(content, "en");
-        msg.setEN(translatedEn);
-
-        // 일본어 번역
-        String translatedJa = translationService.translateText(content, "ja");
-        msg.setJA(translatedJa);
-
-        // 중국어 번역
-        String translatedCh = translationService.translateText(content, "zh-CN");
-        msg.setCH(translatedCh);
-
 
         log.info("msg123 : {}",msg);
         msgService.save(msg);

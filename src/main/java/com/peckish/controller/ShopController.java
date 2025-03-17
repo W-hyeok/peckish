@@ -239,6 +239,7 @@ public class ShopController {
     public ResponseEntity<ShopOwnerDTO> ShopOwnerInfo(@PathVariable Long shopId) {
         log.info("shopId로 조회한 가게 Controller: {}",shopId);
         ShopOwnerDTO shopOwnerDTO = shopService.getShopOwnerEmail(shopId);
+        log.info("React로 전달할 사장님 정보: {}", shopOwnerDTO);
         return ResponseEntity.ok(shopOwnerDTO);
     }
 

@@ -23,10 +23,6 @@ public class MsgDTO {
     private Long ROOM_ID;
     private String email;
     private String CONTENT;
-    private String KO;
-    private String EN;
-    private String JA;
-    private String CH;
     private Status STATUS;
     private String selectedLanguage;
     private Map<String, String> translatedMessage;
