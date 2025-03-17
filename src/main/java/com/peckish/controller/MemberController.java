@@ -56,6 +56,7 @@ public class MemberController {
     // 멤버 1명 조회
     @GetMapping("/{email}")
     public MemberResponseDTO getMember(@PathVariable("email") String email) {
+        log.info(" memberService.getMemberByEmail(email): {}",  memberService.getMemberByEmail(email));
         return memberService.getMemberByEmail(email);
     }
 

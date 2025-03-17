@@ -26,4 +26,5 @@ public interface ParticipantRepository extends JpaRepository<Participants, Long>
             nativeQuery = true)
     List<Object[]> findUserNicknameAndLatestMessageByRoomId(@Param("roomId") Long roomId,
                                                             @Param("ownerEmail") String ownerEmail);
+
 }

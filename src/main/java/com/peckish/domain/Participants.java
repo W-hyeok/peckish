@@ -25,7 +25,5 @@ public class Participants {
 
     private LocalDateTime REG_DATE;
 
-    private String LANG;
-
 
 }
