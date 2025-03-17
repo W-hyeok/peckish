@@ -1,5 +1,6 @@
 package com.peckish.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -60,43 +61,35 @@ public class ReviewController {
         return Map.of("Result", reviewList);
     }
 
-        // User - 리뷰 별점 계산
-        @GetMapping("/average/{shopId}/USER")
-        public Double UserRatingAvg(@PathVariable("shopId") Long shopId) {
-            log.info("USER ratingAvg - shopId : {}", shopId);
+    // User - 리뷰 별점 계산
+    @GetMapping("/average/{shopId}/USER")
+    public Double UserRatingAvg(@PathVariable("shopId") Long shopId) {
+        log.info("USER ratingAvg - shopId : {}", shopId);
 
-            Double average = reviewService.updateShopUserRating(shopId);
+        Double average = reviewService.updateShopUserRating(shopId);
 
-            if (average != null) {
-                average = Math.round(average * 100.0) / 100.0;
-            } else {
-                average = 0.0; // null 값 방지
-            }
-            return average; //
+        if (average != null) {
+            average = Math.round(average * 100.0) / 100.0;
+        } else {
+            average = 0.0; // null 값 방지
         }
+        return average; //
+    }
 
-        // Owner - 리뷰 별점 계산
-        @GetMapping("/average/{shopId}/OWNER")
-        public Double OwnerRatingAvg(@PathVariable("shopId") Long shopId) {
-            log.info("shopId - OWNER ratingAvg : {}", shopId);
+    // Owner - 리뷰 별점 계산
+    @GetMapping("/average/{shopId}/OWNER")
+    public Double OwnerRatingAvg(@PathVariable("shopId") Long shopId) {
+        log.info("shopId - OWNER ratingAvg : {}", shopId);
 
-            Double average = reviewService.findOwnerRatingAvg(shopId);
+        Double average = reviewService.updateOwnerRatingAvg(shopId);
 
-            if (average != null) {
-                average = Math.round(average * 100.0) / 100.0;
-            } else {
-                average = 0.0; // null 값 방지
-            }
-            return average; //
+        if (average != null) {
+            average = Math.round(average * 100.0) / 100.0;
+        } else {
+            average = 0.0; // null 값 방지
         }
-
-
-
-
-
-
-
-
+        return average; //
+    }
 
             // 리뷰 별점 삭제시에도 자동으로 별점 계산
 //    @GetMapping("/average/{reviewId}")
@@ -109,10 +102,26 @@ public class ReviewController {
 //    }
 
 
-            // 리뷰 수정
+    // 리뷰 수정
+    @PostMapping("/modify/{reviewId}/{infoType}")
+    public Map<String, Long> modifyReview(@PathVariable("reviewId") Long reviewId,@PathVariable("infoType")String infoType){
+        log.info("modifyReview - reviewId : {}", reviewId);
+        log.info("modifyReview - infoType : {}", infoType);
 
+        return Map.of("Result", reviewId);
+    }
 
-            // 리뷰 삭제
+    // 리뷰 삭제
+    @DeleteMapping("/delete/{reviewId}/{infoType}")
+    public String deleteReview(@PathVariable("reviewId") Long reviewId,
+                             @PathVariable("infoType") String infoType) {
+        log.info("deleteReview - reviewId : {}", reviewId);
+        log.info("deleteReview - infoType : {}", infoType);
+
+        reviewService.deleteReview(reviewId, infoType);
+        return "Review Deleted Success";
+    }
+
 
     }
 

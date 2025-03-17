@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -88,7 +89,7 @@ public class ReviewServierImpl implements ReviewService {
             return reviewUserList;
 
         }else {
-            return null;
+            return new ArrayList<ReviewRespDTO>();
         }
     }
 
@@ -105,7 +106,7 @@ public class ReviewServierImpl implements ReviewService {
                     .collect(Collectors.toList());
             return reviewOwnerList;
         } else{
-            return null;
+            return new ArrayList<ReviewRespDTO>();
         }
     }
 
@@ -124,7 +125,7 @@ public class ReviewServierImpl implements ReviewService {
     }
 
     @Override
-    public Double findOwnerRatingAvg(Long shopId) {
+    public Double updateOwnerRatingAvg(Long shopId) {
         // Owner - Review List 가져와 rating 평균 구하기
         ShopOwner shopOwner = shopOwnerRepository.selectReviewOwnerByShopId(shopId);
 
@@ -138,18 +139,24 @@ public class ReviewServierImpl implements ReviewService {
     }
 
     @Override
-    public void deleteReview(Long reviewId) {
+    public Long deleteReview(Long reviewId, String infoType) {
+        log.info("리뷰삭제 : {}", reviewId);
+        log.info("리뷰 infoType : {}",infoType);
 
+        if(infoType.equals("USER")){
+            reviewUserRepository.deleteById(reviewId);
+        }else if(infoType.equals("OWNER")){
+            reviewOwnerRepository.deleteById(reviewId);
+        }
 
-
-
+        return reviewId;
     }
 
 
     // 리뷰 수정
 
 
-    // 리뷰 삭제
+
 
 
 

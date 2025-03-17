@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -276,7 +278,7 @@ public class ShopServiceImpl implements ShopService {
              */
         }else {
         // 만약 메뉴가 없으면 isEmpty() == true -> null 리턴
-            return null;
+            return new ArrayList<MenuRespDTO>();
         }
     }
 
@@ -294,7 +296,7 @@ public class ShopServiceImpl implements ShopService {
         }else{
             // 메뉴가 없는 상황
             // isempty() == true
-            return null;
+            return new ArrayList<MenuRespDTO>();
         }
     }
     

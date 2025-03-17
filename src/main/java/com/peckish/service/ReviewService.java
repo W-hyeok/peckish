@@ -18,9 +18,9 @@ public interface ReviewService {
     // User - 리뷰 별점 조회
     Double updateShopUserRating(Long shopId);
     // Owner - 리뷰 별점 조회
-    Double findOwnerRatingAvg(Long shopId);
+    Double updateOwnerRatingAvg(Long shopId);
     // 리뷰 삭제시에도 별점평균 처리
-    public void deleteReview(Long reviewId);
+    Long deleteReview(Long reviewId, String infoType);
     // 리뷰 수정
 
 
