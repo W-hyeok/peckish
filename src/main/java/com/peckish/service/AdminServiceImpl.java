@@ -145,6 +145,13 @@ public class AdminServiceImpl implements AdminService {
         findMember.changeMemberStat(1);
     }
 
+    // 사업자 승인 반려 처리(동일 사업자 번호 존재 --> memberStat = 4로 처리 -> 사업자 로그인 시도시 알림 처리)
+    @Override
+    public void modifyMemberStat4(String email) {
+        Member findMember = memberRepository.findById(email).orElseThrow();
+        findMember.changeMemberStat(4);
+    }
+
     @Override
     public void remove(String email) {
         log.info("Admin service delete member..." + email);

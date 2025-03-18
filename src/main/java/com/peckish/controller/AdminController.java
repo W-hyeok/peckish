@@ -53,6 +53,17 @@ public class AdminController {
         return email;
     }
 
+    // 사업자 승인 반려 처리(동일 사업자 번호 존재 --> memberStat = 4로 처리 -> 사업자 로그인 시도시 알림 처리)
+    @PutMapping("/modifyInfoReturn/{email}")
+    public String modifyMemberInfoReturn(@PathVariable(name="email") String email) {
+        log.info("modifyInfo - 사업자 반려 처리 email : {}", email);
+        //memberFormModifyInfoDTO.setEmail(email);
+        //adminService.modifyMember(memberFormModifyInfoDTO);
+        adminService.modifyMemberStat4(email);
+        return email;
+    }
+
+
     @DeleteMapping("/{email}")
     public Map<String, String> remove(@PathVariable("email") String email) {
         log.info("------------delete member------------");
