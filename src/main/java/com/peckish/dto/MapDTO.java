@@ -28,6 +28,7 @@ public class MapDTO {
     private LocalTime openTime;
     private LocalTime closeTime;
     private String status;
+    private String filename;
 
     // Entity → DTO
     public MapDTO toMapDTO(Map map) {
@@ -46,6 +47,7 @@ public class MapDTO {
             mapDTO.setCategory(map.getShop().getShopOwner().getCategory());
             mapDTO.setOpenTime(LocalTime.parse(map.getShop().getShopOwner().getOpenTime(), formatter));
             mapDTO.setCloseTime(LocalTime.parse(map.getShop().getShopOwner().getCloseTime(),formatter));
+            mapDTO.setFilename(map.getShop().getShopOwner().getFilename());
             mapDTO.setOpen(map.getShop().getShopOwner().isOpen());
 //            mapDTO.setStatus(mapDTO.isOpen() ? "opened" : (currentTime.isAfter(mapDTO.getOpenTime()) && currentTime.isBefore(mapDTO.getCloseTime()) ? "opened" : "closed"));
 //            mapDTO.setStatus(currentTime.isAfter(mapDTO.getOpenTime()) && currentTime.isBefore(mapDTO.getCloseTime()) ? "opened" : (mapDTO.isOpen() ? "opened" : "closed"));
@@ -58,6 +60,7 @@ public class MapDTO {
             mapDTO.setCategory(map.getShop().getShopUser().getCategory());
             mapDTO.openTime = LocalTime.parse(map.getShop().getShopUser().getOpenTime(), formatter);
             mapDTO.closeTime = LocalTime.parse(map.getShop().getShopUser().getCloseTime(), formatter);
+            mapDTO.setFilename(map.getShop().getShopUser().getFilename());
             mapDTO.setOpen(map.getShop().getShopUser().isOpen());
             // 제보된 가게의 경우 시간 조건만 맞으면 개점으로 판정.
             mapDTO.setStatus(currentTime.isAfter(mapDTO.getOpenTime()) && currentTime.isBefore(mapDTO.getCloseTime()) ? "opened" : "closed");
