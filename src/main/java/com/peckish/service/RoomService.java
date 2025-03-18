@@ -81,15 +81,12 @@ public class RoomService {
         return roomRepository.findById(id).orElse(null);
     }
     public List<RoomDTO> getRoomDetailsByUserName(String memberEmail) {
-        List<Object[]> results = participantRepository.getRoomIdAndPhotoPathByUserName(memberEmail);
+        List<Object[]> results = participantRepository.getRoomIdPhotoAndUnreadCountByUserName(memberEmail);
         return results.stream().map(result -> {
-            Long roomId = (Long) result[0]; // 첫 번째 요소는 ROOM_ID
-            String photoPath = (String) result[1]; // 두 번째 요소는 photo_path
-
-            return new RoomDTO(
-                    roomId,
-                    photoPath
-            );
+            Long roomId = (Long) result[0];
+            String photoPath = (String) result[1];
+            Long unreadCount = (Long) result[2];
+            return new RoomDTO(roomId, photoPath, unreadCount);
         }).collect(Collectors.toList());
     }
 

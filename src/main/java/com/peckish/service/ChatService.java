@@ -25,6 +25,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class ChatService {
 
+    private final MsgRepository msgRepository;
     private final ChatRepository chatRepository;
     private final MsgService msgService;
 
@@ -85,6 +86,7 @@ public class ChatService {
 
         log.info("msg123 : {}",msg);
         msgService.save(msg);
+
     }
 
     private boolean isEnterRoom(MsgDTO msgDTO) {
@@ -98,58 +100,8 @@ public class ChatService {
         return ChatRoom.of(room.getROOM_ID(), room.getROOM_NAME());
     }
 
-//    public List<RoomListDTO> getChatList(String managerEmail) {
-//        List<RoomListDTO> roomList = new ArrayList<>();
-//
-//        // 모든 채팅방의 ROOM_ID를 가져옵니다.
-//        List<Long> roomIds = msgRepository.findDistinctRoomIds();
-//
-//        for (Long roomId : roomIds) {
-//            // 해당 채팅방의 메시지를 최신순으로 가져옵니다.
-//            List<Msg> messages = msgRepository.findMessagesByRoomIdOrderByRegDateDesc(roomId);
-//            if (messages.isEmpty()) continue;
-//            Msg lastMsg = messages.get(0);
-//
-//            // 사장님이 아닌 사용자가 보낸 UNREAD 메시지 개수를 계산합니다.
-//            Long unreadCount = msgRepository.countUnreadMessages(roomId, managerEmail, MsgStatus.UNREAD);
-//
-//            // 마지막 메시지가 UNREAD 상태이고, 발신자가 사장님이 아닌 경우에만 content에 표시합니다.
-//            String contentToDisplay = "";
-//            if (lastMsg.getSTATUS() == MsgStatus.UNREAD && !lastMsg.getUSERNAME().equals(managerEmail)) {
-//                contentToDisplay = lastMsg.getCONTENT();
-//            }
-//
-//            // 고객의 닉네임을 결정합니다.
-//            String userNickname = "";
-//            if (!lastMsg.getUSERNAME().equals(managerEmail)) {
-//                userNickname = lastMsg.getUSERNAME();
-//            } else {
-//                // 만약 마지막 메시지가 사장님이 보낸 메시지라면, 최근 고객 메시지를 찾아서 닉네임으로 사용합니다.
-//                for (Msg m : messages) {
-//                    if (!m.getUSERNAME().equals(managerEmail)) {
-//                        userNickname = m.getUSERNAME();
-//                        break;
-//                    }
-//                }
-//            }
-//
-//            // 프로필 사진은 별도의 회원 정보를 조회할 수 있다면 그 값을 사용합니다.
-//            // 여기서는 기본값을 사용합니다.
-//            String photoPath = "/default.jpg";
-//
-//            // roomName은 간단하게 고객의 닉네임을 사용하거나 별도의 로직을 적용할 수 있습니다.
-//            String roomName = userNickname;
-//
-//            RoomListDTO dto = new RoomListDTO();
-//            dto.setROOM_ID(roomId);
-//            dto.setContent(contentToDisplay);
-//            dto.setUserNickname(userNickname);
-//            dto.setPhotoPath(photoPath);
-//            dto.setUnreadCount(unreadCount);
-//
-//            roomList.add(dto);
-//        }
-//
-//        return roomList;
-//    }
+    public void markMessagesAsRead(Long roomId, String email) {
+        msgRepository.markMessagesAsRead(roomId, email);
+    }
+
 }

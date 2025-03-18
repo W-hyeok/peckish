@@ -9,10 +9,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ParticipantRepository extends JpaRepository<Participants, Long> {
-    @Query("SELECT p.ROOM_ID, u.profileFilename FROM Participants p " +
-            "JOIN Member u ON p.email = u.email " +
-            "WHERE p.email = :memberEmail")
-    List<Object[]> getRoomIdAndPhotoPathByUserName(@Param("memberEmail") String memberEmail);
+    @Query("SELECT p.ROOM_ID, m.profileFilename, " +
+            "  (SELECT COUNT(msg) FROM Msg msg " +
+            "   WHERE msg.ROOM_ID = p.ROOM_ID " +
+            "     AND msg.isRead = false " +
+            "     AND msg.EMAIL <> :memberEmail) " +
+            "FROM Participants p JOIN Member m ON p.email = m.email " +
+            "WHERE p.ROOM_ID IN (SELECT p2.ROOM_ID FROM Participants p2 WHERE p2.email = :memberEmail) " +
+            "  AND p.email <> :memberEmail")
+    List<Object[]> getRoomIdPhotoAndUnreadCountByUserName(@Param("memberEmail") String memberEmail);
 
     // 사장님(즉, ownerEmail)이 참여한 모든 참가자 행을 조회
     List<Participants> findByEmail(String email);
