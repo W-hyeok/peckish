@@ -198,9 +198,21 @@ public class ShopController {
         log.info("modify - shopDTO 수정할 shopId : {}", shopId);
         log.info("modify - infoType 수정할 shopDetailId : {}", shopDetailId);
         log.info("modify - infoType 수정할 infoType : {}", infoType);
-        log.info("modify - infoType 수정할 shopDetailDTO : {}", shopDetailDTO);
+        log.info("modify - shopDetailDTO 수정할 shopDetailDTO : {}", shopDetailDTO);
+        log.info("modify - infoType 수정할 shopDetailDTO.getShopfile() : {}", shopDetailDTO.getShopfile()); // null 이면 사용자가 이미지 수정 안함. nul이 아니면(뭔가있다) 사용자가 이미지 수정하고 싶은거 보냄
+        log.info("modify - infoType 수정할 shopDetailDTO.getShopFilename() : {}", shopDetailDTO.getShopFilename()); //
 
-
+        /* 수정 이미지 있을때 ==> servieceImpl로 옮김
+        if(shopDetailDTO.getShopfile() != null) {
+            log.info("수정 이미지 있다!!!!");
+            // 현재 DetailDTO안 shopfile 에 들어있는 수정할 사진 실제 파일을 upload 폴더(서버)에 저장하고,
+            String savedUpdatedFilename = fileUtil.saveFile(shopDetailDTO.getShopfile());
+            // 저장할 때 만들어진 uuid 이름을 shopfilename 변수에 저장해 DB에 저장 처리
+            shopDetailDTO.setShopFilename(savedUpdatedFilename);
+        }
+        // null이다 그럼 아무것도 안함. (기존 이미지 데이터가 남아있게 유지)
+        log.info("modify - 이미지 저장로직 이후 shopDetailDTO.getShopFilename() : {}", shopDetailDTO.getShopFilename());
+        */
         //ShopDetailDTO oldDTO = shopService.getShop();
         //MultipartFile shopfile
 

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -305,7 +306,7 @@ public class ShopServiceImpl implements ShopService {
     public void modifyShop(Long shopId, String infoType, Long shopDetailId, ShopDetailDTO shopDetailDTO) {
 
         if(infoType.equals("USER")){
-            ShopUser findShopUser = shopUserRepository.findById(shopId).orElseThrow();
+            ShopUser findShopUser = shopUserRepository.findById(shopDetailId).orElseThrow(); // DB에서 찾아온 정보 담은 Entity
 
             findShopUser.changeTitle(shopDetailDTO.getTitle());
             findShopUser.changeCategory(shopDetailDTO.getCategory());
@@ -313,25 +314,25 @@ public class ShopServiceImpl implements ShopService {
             findShopUser.changeLocation(shopDetailDTO.getLocation());
             findShopUser.changeOpentime(shopDetailDTO.getOpenTime());
             findShopUser.changeCloseTime(shopDetailDTO.getCloseTime());
-            findShopUser.changeUpdateDate(shopDetailDTO.getUpdateDate());
+            findShopUser.changeUpdateDate(LocalDateTime.now());
             // 새로 등록하는 이미지가 있으면
-            if(shopDetailDTO.getShopfile() != null && !shopDetailDTO.getShopfile().isEmpty()){
-                // 기존 이미지가 있으면 이미지파일 삭제 (old 이미지 삭제)
+            if(shopDetailDTO.getShopfile() != null){
+                // 기존 이미지가 있으면 (수정하기 전에 저장된 이미지) 이미지파일 삭제 (old 이미지 삭제)
                 if(findShopUser.getFilename() != null) {
                     //list 형식으로 저장해야 하기 때문에 asList로 파일을 리스트형식으로 바꿔줌
                     fileUtil.deleteFile(Arrays.asList(findShopUser.getFilename()));
                 }
-                // 이미지 저장 처리
-                String savedNewFilename = fileUtil.saveFile(shopDetailDTO.getShopfile());
+                // 이미지 저장 처리 : 화면에서 받아온 수정 이미지 파일데이터 꺼내서 upload에 저장하고, 저장된 uuid 이름 리턴받아 변수에 저장
+                String savedUpdatedFilename = fileUtil.saveFile(shopDetailDTO.getShopfile());
                 // 새로 저장된 이미지 파일명 shopDetailDTO.setShopFilename 으로 저장
-                shopDetailDTO.setShopFilename(savedNewFilename);
+                shopDetailDTO.setShopFilename(savedUpdatedFilename);
                 //shopUser에 shoopFilename명 새로 저장
                 findShopUser.changeFileName(shopDetailDTO.getShopFilename()); // DB에 새 이미지 저장
             }
 
 
         }else if(infoType.equals("OWNER")){
-            ShopOwner findShopOwner = shopOwnerRepository.findById(shopId).orElseThrow();
+            ShopOwner findShopOwner = shopOwnerRepository.findById(shopDetailId).orElseThrow();
 
             findShopOwner.changeTitle(shopDetailDTO.getTitle());
             findShopOwner.changeCategory(shopDetailDTO.getCategory());
@@ -343,9 +344,19 @@ public class ShopServiceImpl implements ShopService {
             findShopOwner.changeUpdateDate(shopDetailDTO.getUpdateDate());
             //수정된 정보 DB에 저장
 
-            //기존 이미지가 있으면 이미지파일 삭제 (old 이미지 삭제)
-            if(findShopOwner.getFilename()!=null){
-
+            // 새로 등록하는 이미지가 있으면
+            if(shopDetailDTO.getShopfile() != null){
+                // 기존 이미지가 있으면 (수정하기 전에 저장된 이미지) 이미지파일 삭제 (old 이미지 삭제)
+                if(findShopOwner.getFilename() != null) {
+                    //list 형식으로 저장해야 하기 때문에 asList로 파일을 리스트형식으로 바꿔줌
+                    fileUtil.deleteFile(Arrays.asList(findShopOwner.getFilename()));
+                }
+                // 이미지 저장 처리 : 화면에서 받아온 수정 이미지 파일데이터 꺼내서 upload에 저장하고, 저장된 uuid 이름 리턴받아 변수에 저장
+                String savedUpdatedFilename = fileUtil.saveFile(shopDetailDTO.getShopfile());
+                // 새로 저장된 이미지 파일명 shopDetailDTO.setShopFilename 으로 저장
+                shopDetailDTO.setShopFilename(savedUpdatedFilename);
+                //shopUser에 shoopFilename명 새로 저장
+                findShopOwner.changeFileName(shopDetailDTO.getShopFilename()); // DB에 새 이미지 저장
             }
         }
     }
@@ -384,6 +395,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public void updateShopExist(Long shopId) {
         Shop shop = shopRepository.findById(shopId).orElseThrow();
+        // OwnerData , UserData가 둘 다 0이면 shop의 isExist를 false(0)으로 바꾼다.
         if(!shop.isOwnerData() && !shop.isUserData()) {
             shop.changeExist(false);
         }

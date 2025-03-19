@@ -55,7 +55,7 @@ public class ShopUser {
     @Setter
     private Shop shop;
 
-    //수정 가능한 정보들
+    //수정 가능한 정보들 (setter 대신사용)
     public void changeTitle(String title){
         this.title=title;
     }
