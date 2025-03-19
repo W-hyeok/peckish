@@ -31,4 +31,6 @@ public class MsgDTO {
 
     private MessageType messageType;
 
+    private String type;
+
 }

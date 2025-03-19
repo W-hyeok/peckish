@@ -9,10 +9,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ParticipantRepository extends JpaRepository<Participants, Long> {
-    @Query("SELECT p.ROOM_ID, m.profileFilename, " +
+    @Query("SELECT DISTINCT p.ROOM_ID, m.profileFilename, " +
             "  (SELECT COUNT(msg) FROM Msg msg " +
             "   WHERE msg.ROOM_ID = p.ROOM_ID " +
             "     AND msg.isRead = false " +
+            "     AND msg.STATUS = 'ACTIVE' " +
             "     AND msg.EMAIL <> :memberEmail) " +
             "FROM Participants p JOIN Member m ON p.email = m.email " +
             "WHERE p.ROOM_ID IN (SELECT p2.ROOM_ID FROM Participants p2 WHERE p2.email = :memberEmail) " +
@@ -23,13 +24,19 @@ public interface ParticipantRepository extends JpaRepository<Participants, Long>
     List<Participants> findByEmail(String email);
 
     // 특정 방(roomId)에서 사장님을 제외한 다른 참가자의 닉네임 조회
-    @Query(value = "SELECT m.nickname, " +
-            "       (SELECT msg.content FROM msg msg WHERE msg.room_id = :roomId ORDER BY msg.reg_date DESC LIMIT 1) AS latestContent " +
+    @Query(value = "SELECT DISTINCT m.nickname, " +
+            "       (SELECT msg.content FROM msg msg WHERE msg.room_id = :roomId ORDER BY msg.reg_date DESC LIMIT 1) AS latestContent, " +
+            "       m.profile_filename " + // 프로필 경로 추가
             "FROM participants p " +
             "JOIN member m ON p.email = m.email " +
-            "WHERE p.room_id = :roomId AND p.email <> :ownerEmail",
+            "WHERE p.room_id = :roomId AND p.email <> :ownerEmail " +
+            "LIMIT 1",
             nativeQuery = true)
     List<Object[]> findUserNicknameAndLatestMessageByRoomId(@Param("roomId") Long roomId,
                                                             @Param("ownerEmail") String ownerEmail);
 
+
+    // ROOM_ID 필드를 기준으로 해당 채팅방의 참여자 목록을 조회하는 메소드
+    @Query("SELECT p FROM Participants p WHERE p.ROOM_ID = :roomId")
+    List<Participants> findByROOM_ID(Long roomId);
 }

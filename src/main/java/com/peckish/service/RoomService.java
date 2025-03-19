@@ -107,10 +107,14 @@ public class RoomService {
             List<Object[]> queryResult = participantsRepository.findUserNicknameAndLatestMessageByRoomId(roomId, ownerEmail);
             String userNickname = "";
             String latestContent = "";
+            String profilePath = "";
+
+
             if (!queryResult.isEmpty()) {
                 Object[] row = queryResult.get(0);
                 userNickname = row[0] != null ? row[0].toString() : "";
                 latestContent = row[1] != null ? row[1].toString() : "";
+                profilePath = row[2] != null ? row[2].toString() : "";
             }
 
             // MsgRepository를 통해 해당 채팅방의 안읽은 메시지 개수를 조회
@@ -119,6 +123,8 @@ public class RoomService {
             RoomListDTO roomListDTO = new RoomListDTO();
             roomListDTO.setROOM_ID(room.getROOM_ID());
             roomListDTO.setContent(latestContent);
+            log.info("latestContent: {}", latestContent);
+            roomListDTO.setPhotoPath(profilePath);
             roomListDTO.setUnreadCount(unreadCount);
             roomListDTO.setUserNickname(userNickname);
 

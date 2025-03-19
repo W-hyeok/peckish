@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.peckish.domain.Msg;
 import com.peckish.domain.MsgStatus;
+import com.peckish.domain.Participants;
 import com.peckish.domain.Room;
 import com.peckish.dto.ChatRoom;
 import com.peckish.dto.MsgDTO;
 import com.peckish.repository.ChatRepository;
 import com.peckish.repository.MsgRepository;
+import com.peckish.repository.ParticipantRepository;
 import com.peckish.util.ChatUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -30,6 +34,7 @@ public class ChatService {
     private final MsgService msgService;
 
     ObjectMapper objectMapper = new ObjectMapper();
+    private final ParticipantRepository participantRepository;
 
 
     public List<Room> findAll() {
@@ -100,8 +105,21 @@ public class ChatService {
         return ChatRoom.of(room.getROOM_ID(), room.getROOM_NAME());
     }
 
-    public void markMessagesAsRead(Long roomId, String email) {
-        msgRepository.markMessagesAsRead(roomId, email);
+    public int markMessagesAsRead(Long roomId, String email) {
+        return msgRepository.markMessagesAsRead(roomId, email);
+    }
+
+    public List<String> getParticipantsEmails(Long roomId, String senderEmail) {
+        List<Participants> participantList = participantRepository.findByROOM_ID(roomId);
+        return participantList.stream()
+                .map(Participants::getEmail)
+                .filter(email -> !email.equals(senderEmail))
+                .collect(Collectors.toList());
+    }
+
+    // 지정된 방에서 recipientEmail이 읽지 않은 메시지 개수를 반환
+    public int getUnreadCount(Long roomId, String recipientEmail) {
+        return msgRepository.countUnreadMessagesByRoomAndRecipient(roomId, recipientEmail);
     }
 
 }
