@@ -12,7 +12,7 @@ import java.util.Map;
 public class MsgDTO {
 
     public enum MessageType {
-        ENTER, TALK
+        ENTER, TALK, EXIT
     }
 
     public enum Status {

@@ -8,9 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 public class RoomDTO {
     private Long roomId;
     private String photoPath;
+    private Long unreadCount;  // 추가: 각 대화방의 안 읽은 메시지 수
 
-    public RoomDTO(Long roomId, String photoPath) {
+    public RoomDTO(Long roomId, String photoPath, Long unreadCount) {
         this.roomId = roomId;
         this.photoPath = photoPath;
+        this.unreadCount = unreadCount;
     }
 }

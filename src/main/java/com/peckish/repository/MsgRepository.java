@@ -4,6 +4,7 @@ import com.peckish.domain.Msg;
 import com.peckish.domain.MsgStatus;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -22,19 +23,15 @@ public interface MsgRepository extends JpaRepository<Msg, Long> {
                              @Param("ownerEmail") String ownerEmail,
                              @Param("unreadStatus") MsgStatus unreadStatus);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE Msg m SET m.isRead = true " +
+            "WHERE m.ROOM_ID = :roomId " +
+            "  AND m.EMAIL <> :email " +
+            "  AND m.isRead = false")
+    int markMessagesAsRead(@Param("roomId") Long roomId, @Param("email") String email);
 
 
-//    // 1. 모든 채팅방의 ROOM_ID 목록을 조회 (중복 제거)
-//    @Query("SELECT DISTINCT m.ROOM_ID FROM Msg m")
-//    List<Long> findDistinctRoomIds();
-//
-//    // 2. 특정 ROOM_ID의 메시지들을 최신순(REG_DATE 내림차순)으로 조회
-//    @Query("SELECT m FROM Msg m WHERE m.ROOM_ID = :roomId ORDER BY m.REG_DATE DESC")
-//    List<Msg> findMessagesByRoomIdOrderByRegDateDesc(@Param("roomId") Long roomId);
-//
-//    // 3. 특정 ROOM_ID에서, 사장님(매개변수 managerEmail)이 아닌 사용자가 보낸 UNREAD 메시지 개수를 계산
-//    @Query("SELECT COUNT(m) FROM Msg m WHERE m.ROOM_ID = :roomId AND m.STATUS = :unreadStatus AND m.USERNAME <> :managerEmail")
-//    Long countUnreadMessages(@Param("roomId") Long roomId,
-//                             @Param("managerEmail") String managerEmail,
-//                             @Param("unreadStatus") MsgStatus unreadStatus);
+
+
 }

@@ -17,6 +17,8 @@ public interface AdminService {
     // 사업자로 승인 처리
     void modifyMemberStat(String email);
 
+    // 사업자 승인 반려 처리(동일 사업자 번호 존재 --> memberStat = 4로 처리 -> 사업자 로그인 시도시 알림 처리)
+    void modifyMemberStat4(String email);
 
     // 삭제
     void remove(String email);
