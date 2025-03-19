@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -96,12 +97,12 @@ public class ShopController {
     public Map<String, List> menuList(@PathVariable("infoType") String infoType, @PathVariable("shopId") Long shopId) {
         log.info("menuAdd getMenuList - shopId : {}", shopId);
         log.info("menuAdd getMenuList - infoType : {}", infoType);
-        List menuList = null;
+        List menuList = new ArrayList<>();
 
         if (infoType.equals("USER")) {
-            menuList = shopService.getShopUserMenu(shopId);
+            menuList = Optional.ofNullable(shopService.getShopUserMenu(shopId)).orElse(new ArrayList<>()) ;
         } else if (infoType.equals("OWNER")) {
-            menuList = shopService.getShopOwnerMenu(shopId);
+            menuList = Optional.ofNullable(shopService.getShopOwnerMenu(shopId)).orElse(new ArrayList<>()) ;
         }
         return Map.of("RESULT", menuList);
     }
