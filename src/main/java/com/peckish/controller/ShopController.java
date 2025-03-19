@@ -226,11 +226,11 @@ public class ShopController {
     // 상점 삭제
     @DeleteMapping("/delete/{shopId}/{infoType}/{shopDetailId}")
     public String deleteShop(@PathVariable("shopId") Long shopId, @PathVariable("infoType") String infoType, @PathVariable("shopDetailId") Long shopDetailId) {
-        log.info("shopId : {}", shopId);
-        log.info("infoType : {}", infoType);
-        log.info("shopDetailId : {}", shopDetailId);
+        log.info("Delete shopId : {}", shopId);
+        log.info("Delete infoType : {}", infoType);
+        log.info("Delete shopDetailId : {}", shopDetailId);
 
-        shopService.modifyShopStat(shopId, shopDetailId,infoType);
+        shopService.modifyShopStat(shopId, shopDetailId, infoType);
         shopService.updateShopExist(shopId); // 사장데이터와 제보데이터 둘다 없으면 shop exist false 처리
 
         return "Success";
