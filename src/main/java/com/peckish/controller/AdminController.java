@@ -17,9 +17,9 @@ public class AdminController {
 
     // 목록 처리 : .../list?page=1&size=10
     @GetMapping("/list")
-    public PageResponseDTO<MemberResponseDTO> list(PageRequestDTO pageRequestDTO) {
+    public PageResponseMoonDTO<MemberResponseDTO> list(PageRequestDTO pageRequestDTO) {
         log.info("/admin/list - pageRequestDTO : {}", pageRequestDTO);
-        return adminService.list(pageRequestDTO);
+        return adminService.list2(pageRequestDTO);
     }
 
     // 점포 목록 처리 : .../list?page=1&size=10

@@ -1,11 +1,16 @@
 package com.peckish.repository;
 
 import com.peckish.domain.Member;
+import com.peckish.domain.Role;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface AdminRepository extends JpaRepository<Member,Long> {
     // 회원 목록 조회
@@ -22,5 +27,8 @@ public interface AdminRepository extends JpaRepository<Member,Long> {
     @Query("UPDATE Member m SET m.memberStat = :memberStat WHERE m.email = :email")
     void updateToDeleteMember(@Param("email") String email, @Param("memberStat") int memberStat);
 
+    //@EntityGraph(attributePaths = {"roleList"})
+    @Query("select m from Member m JOIN FETCH m.roleList r where r = :role")
+    Page<Member> getMemberUserWithPaging(Role role, Pageable pageable);
 
 }

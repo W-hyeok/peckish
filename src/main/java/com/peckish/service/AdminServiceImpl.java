@@ -1,6 +1,7 @@
 package com.peckish.service;
 
 import com.peckish.domain.Member;
+import com.peckish.domain.Role;
 import com.peckish.domain.Shop;
 import com.peckish.dto.*;
 import com.peckish.repository.AdminRepository;
@@ -28,6 +29,7 @@ public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final ShopRepository shopRepository;
     private final MemberRepository memberRepository;
+
 
     //전체회원목록
     @Override
@@ -63,7 +65,7 @@ public class AdminServiceImpl implements AdminService {
     public PageResponseDTO<MemberResponseDTO> memberlist(PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1,
                 pageRequestDTO.getSize(), Sort.by("email").descending());
-        Page<Member> result = adminRepository.findAll(pageable);
+        Page<Member> result = adminRepository.getMemberUserWithPaging(Role.OWNER, pageable);
 
         // totalCount
         long totalCount = result.getTotalElements();
@@ -74,6 +76,7 @@ public class AdminServiceImpl implements AdminService {
                         .collect(Collectors.toList()))
                 .pageRequestDTO(pageRequestDTO)
                 .totalCount(totalCount).build();
+
         return responseDTO;
     }
 
@@ -165,6 +168,27 @@ public class AdminServiceImpl implements AdminService {
         member.changeMemberStat(0);
 
         memberRepository.save(member);
+    }
+
+    @Override
+    public PageResponseMoonDTO<MemberResponseDTO> list2(PageRequestDTO pageRequestDTO) {
+
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1,
+                pageRequestDTO.getSize(), Sort.by("email").descending());
+        Page<Member> result = adminRepository.findAll(pageable);
+
+        // totalCount
+        long totalCount = result.getTotalElements();
+
+        // builder()에 all 이라고 이름 부여 - builder() 대신 all() 호출, generic은 all 앞에 부착 // 통으로 구조 암기!
+        PageResponseMoonDTO<MemberResponseDTO> responseDTO = PageResponseMoonDTO.<MemberResponseDTO>all()
+                .list(result.getContent().stream()
+                        .map(member -> toMemberResponseDTO(member))
+                        .collect(Collectors.toList()))
+                .pageRequestDTO(pageRequestDTO)
+                .totalCount(totalCount)
+                .build();
+        return responseDTO;
     }
 
 }
