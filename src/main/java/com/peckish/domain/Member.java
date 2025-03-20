@@ -46,10 +46,13 @@ public class Member {
     // 수정 메서드
     // 새 역할 추가
     public void addRole(Role role) {
-        roleList.add(role);
+        if (!roleList.contains(role)) { roleList.add(role);}
     }
     // 특정 역할 제거
     public void removeRole(Role role) {
+        if (!roleList.contains(role)) {
+            return;
+        }
         roleList.remove(role);
     }
     // pw 변경

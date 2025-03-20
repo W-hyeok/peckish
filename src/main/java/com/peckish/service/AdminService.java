@@ -23,5 +23,6 @@ public interface AdminService {
     // 삭제
     void remove(String email);
 
-
+    // 기존 list 에서 visitCount 추가한 PageResponseMoonDTO 타입 리턴
+    PageResponseMoonDTO<MemberResponseDTO> list2(PageRequestDTO pageRequestDTO);
 }
