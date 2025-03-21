@@ -164,10 +164,13 @@ public class ShopServiceImpl implements ShopService {
             // ShopUser 엔티티를 ShopUserDTO로 변환해 ShopDTO에 추가
             ShopUserDTO shopUserDTO = new ShopUserDTO(shop.getShopUser());
             shopDTO.setShopUserDTO(shopUserDTO);
+            log.info("shopUserDTO??: {}", shopUserDTO);
         }
         if(shopDTO.isOwnerData()) {
             ShopOwnerDTO shopOwnerDTO = new ShopOwnerDTO(shop.getShopOwner());
             shopDTO.setShopOwnerDTO(shopOwnerDTO);
+            log.info("shopOwnerDTO??: {}", shopOwnerDTO);
+
         }
         log.info("shopDTO : {}", shopDTO);
         return shopDTO;

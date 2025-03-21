@@ -49,6 +49,15 @@ public class MapService {
         return allMapDTOs;
     }
 
+    // 맵 정보 수정
+    public void modifyMap(MapDTO mapDTO) {
+        log.info("MapService - modifyMap: {}", mapDTO.toString());
+        Long sid = mapDTO.getShopId(); // mapDTO에서 shopId 꺼내기
+        double lat = mapDTO.getLat(); // 위도 꺼내기
+        double lng = mapDTO.getLng(); // 경도 꺼내기
+        mapRepository.modifyMap(sid, lat, lng);
+    }
+
 //    // 카테고리 없음, "영업 중"
 //    public List<MapDTO> findAllByOpen() {
 //        log.info("MapService - findAllByOpen");

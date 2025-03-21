@@ -190,7 +190,8 @@ public class ShopController {
     public Map<String, String> modifyShopInfo(@PathVariable("shopId") Long shopId,
                                               @PathVariable("shopDetailId") Long shopDetailId,
                                               @PathVariable("infoType") String infoType,
-                                              ShopDetailDTO shopDetailDTO) {
+                                              ShopDetailDTO shopDetailDTO,
+                                              MapDTO mapDTO) {
 
         // 수정가능한 정보
         // title, location, 이미지바꾸기, 요일 days, open/close time, 카테고리 + 좌표
@@ -220,7 +221,7 @@ public class ShopController {
         //DB 수정처리
         // shop 수정 : shopId, infoType
         shopService.modifyShop(shopId, infoType, shopDetailId, shopDetailDTO);
-        //mapService.modify(mapDTO);
+        mapService.modifyMap(mapDTO);
 
         return Map.of("RESULT", "success");
     }

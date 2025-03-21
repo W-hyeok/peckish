@@ -3,6 +3,7 @@ package com.peckish.repository;
 import com.peckish.domain.Map;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -133,6 +134,9 @@ public interface MapRepository extends JpaRepository<Map, Long> {
 //    @Query("SELECT m FROM Map m")
 //    List<Map> testFind();
 
-
+    // (shopId에 해당하는) 위치 정보 수정
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Map m SET m.lat = :lat, m.lng = :lng WHERE m.shop.shopId = :sid")
+    void modifyMap(@Param("sid") Long sid, @Param("lat") double lat, @Param("lng") double lng);
 
 }
