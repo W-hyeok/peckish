@@ -30,8 +30,8 @@ public interface MemberService {
                 member.getBusinessNumber(),
                 member.getProfileFilename(),
                 member.getCertiFilename(),
-                member.isSocial(),
                 member.isOwned(),
+                member.isSocial(),
                 member.getMemberStat(),
                 member.getRoleList().stream()
                         .map(role -> role.name())

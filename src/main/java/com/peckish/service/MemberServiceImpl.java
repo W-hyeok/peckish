@@ -41,6 +41,7 @@ public class MemberServiceImpl implements MemberService {
         log.info("MemberSerivce - getKakaoMember - email: {}", email);
 
         Optional<Member> findMember = memberRepository.findById(email);
+//        log.info("MemberSerivce - findMember - email: {}", findMember.get());
         // 기존 회원일 경우: DB에서 찾은 Member를 MemberDTO로 변환하여 리턴
         if(findMember.isPresent()) {
             MemberDTO memberDTO = entityToDTO(findMember.get());
@@ -50,6 +51,7 @@ public class MemberServiceImpl implements MemberService {
         // 신규 회원일 경우: 임시 pw, 임시 닉네임으로 Member(En.) 생성하여 DB에 저장 및 DTO 리턴
         Member socialMember = makeSocialMember(email);
         memberRepository.save(socialMember);
+        log.info("MemberSerivce - getKakaoMember - socialMember: {}", socialMember);
         MemberDTO socialMemberDTO = entityToDTO(socialMember);
 
         return socialMemberDTO;

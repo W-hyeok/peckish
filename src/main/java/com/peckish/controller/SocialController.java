@@ -21,7 +21,9 @@ public class SocialController {
         log.info(" ---- Socail Controller - accessToken: {}", accessToken);
 
         MemberDTO memberDTO = memberService.getKakaoMember(accessToken);
+        log.info(" ---- Socail Controller - memberDTO: {}", memberDTO);
         Map<String, Object> claims = memberDTO.getClaims();
+        log.info(" ---- Socail Controller - claims: {}", claims);
 
         String jwtAccessToken = JWTUtil.generateToken(claims, 10);
         String jwtRefreshToken = JWTUtil.generateToken(claims, 60*24);
