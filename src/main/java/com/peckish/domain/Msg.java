@@ -27,5 +27,6 @@ public class Msg {
 
     // 읽음 여부를 나타내는 새로운 필드 추가 (기본값 false: 읽지 않음)
     @Column(name = "IS_READ")
+    @Builder.Default
     private Boolean isRead = false;
 }

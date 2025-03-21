@@ -46,7 +46,7 @@ public class AdminController {
     // 멤버 -> 사업자로 승인처리
     @PutMapping("/modifyInfo/{email}")
     public String modifyMemberInfo(@PathVariable(name="email") String email) {
-        log.info("modifyInfo - 사업자 승인 처리 email : {}", email);
+        log.info("modifyInfo - 사업자 승인 또는 승인 취소 처리 email : {}", email);
         //memberFormModifyInfoDTO.setEmail(email);
         //adminService.modifyMember(memberFormModifyInfoDTO);
         adminService.modifyMemberStat(email);

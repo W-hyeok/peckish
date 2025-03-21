@@ -134,6 +134,7 @@ public class MemberServiceImpl implements MemberService {
                 .profileFilename(memberFormDTO.getProfileFilename())
                 .certiFilename(memberFormDTO.getCertiFilename())
                 .social(false)
+                .owned(false)
                 .memberStat(1)
                 .regDate(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
                 .updateDate(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
