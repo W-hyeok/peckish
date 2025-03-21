@@ -49,8 +49,13 @@ public class MapDTO {
             mapDTO.setCloseTime(LocalTime.parse(map.getShop().getShopOwner().getCloseTime(),formatter));
             mapDTO.setFilename(map.getShop().getShopOwner().getFilename());
             mapDTO.setOpen(map.getShop().getShopOwner().isOpen());
-            mapDTO.setStatus(mapDTO.isOpen() ? "opened" : (!(currentTime.isAfter(mapDTO.getOpenTime()) && currentTime.isBefore(mapDTO.getCloseTime())) ? "closed" : "opened"));
-            // owner 없으면 user
+//            mapDTO.setStatus(!mapDTO.isOpen() ? "closed" : (!(currentTime.isAfter(mapDTO.getOpenTime()) && currentTime.isBefore(mapDTO.getCloseTime())) ? "closed" : "opened"));
+            // (시간 조건) 및 isOpen 둘 중 하나라도 open이면 opened
+            if((currentTime.isAfter(mapDTO.getOpenTime()) && currentTime.isBefore(mapDTO.getCloseTime())) || mapDTO.isOpen()) {
+                mapDTO.setStatus("opened");
+            } else {
+                mapDTO.setStatus("closed");
+            }
         } else {
             mapDTO.setCertificate(false);
             mapDTO.setTitle(map.getShop().getShopUser().getTitle());
