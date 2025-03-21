@@ -39,6 +39,14 @@ public class ShopServiceImpl implements ShopService {
         Shop shopEntity = shopDTO.toEntity();
         Shop savedShop = shopRepository.save(shopEntity);
 
+
+        return savedShop.getShopId(); // shop_id 리턴
+    }
+
+    @Override
+    public Long addDetail(Long shopId, ShopDTO shopDTO, ShopDetailDTO shopDetailDTO, MapDTO mapDTO) {
+        Shop shopEntity = shopRepository.findById(shopId).orElseThrow(EntityNotFoundException::new);
+
         Member member = memberRepository.findById(shopDetailDTO.getEmail()).orElseThrow();
         log.info("멤버 정보? {}", member);
         // Member(email=owner@owner.com, nickname=테스트사장, phone=010-1111-2222 social=false, memberStat=1
@@ -50,31 +58,34 @@ public class ShopServiceImpl implements ShopService {
         if (shopDTO.isCertificate()) {
             // 사장으로 처리
             ShopOwner shopOwnerEntity = shopDetailDTO.toShopOwnerEntity();
-            savedShop.changeOwnerData(true); // 사장데이터 있다
+            shopEntity.changeOwnerData(true); // 사장데이터 있다
+            log.info("isOwnerData??, {}", shopEntity.isOwnerData());
             /* todo: member column update - isOwned false → true */
             memberRepository.updateIsOwned(member.getEmail());
             shopOwnerEntity.setMember(member); // 작성자 정보 추가
-            shopOwnerEntity.setShop(savedShop); // 저장한 위 Shop엔티티 추가
+            shopOwnerEntity.setShop(shopEntity); // 저장한 위 Shop엔티티 추가
+            log.info("shopOwnerEntity: {}", shopOwnerEntity.getShop().isOwnerData());
             member.changeOwned(true); // 소유 여부
             Map mapEntity = mapDTO.toEntity(); // 사장이 작성한 map 정보 DB -> Entity
             //map에 저장할 때 shopId 저장
-            mapEntity.setShop(savedShop);
+            mapEntity.setShop(shopEntity);
             shopOwnerRepository.save(shopOwnerEntity);
             mapRepository.save(mapEntity);
         } else {
             // 제보로 처리
             ShopUser shopUserEntity = shopDetailDTO.toShopUserEntity();
-            savedShop.changeUserData(true); // 제보데이터 있다
+            shopEntity.changeUserData(true); // 제보데이터 있다
             shopUserEntity.setMember(member); // User 작성자 추가
-            shopUserEntity.setShop(savedShop);
+            shopUserEntity.setShop(shopEntity);
             shopUserRepository.save(shopUserEntity);
             Map mapEntity = mapDTO.toEntity(); // 제보자가 작성한 map 정보 DB -> Entity
             //map에 저장할 때 shopId 저장
-            mapEntity.setShop(savedShop);
+            mapEntity.setShop(shopEntity);
             mapRepository.save(mapEntity);
         }
-        return savedShop.getShopId(); // shop_id 리턴
+        return shopEntity.getShopId();
     }
+
     // 제보 정보 추가 등록
     @Override
     public Long addShopUser(Long shopId, ShopDTO shopDTO, ShopDetailDTO shopDetailDTO, MapDTO mapDTO) {

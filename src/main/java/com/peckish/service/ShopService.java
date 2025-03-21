@@ -11,6 +11,9 @@ public interface ShopService {
     //상점 등록
     Long add(ShopDTO shopDTO, ShopDetailDTO shopDetailDTO, MapDTO mapDTO); //상점 등록
 
+    //상점 디테일 등록
+    Long addDetail(Long shopId, ShopDTO shopDTO, ShopDetailDTO shopDetailDTO, MapDTO mapDTO);
+
     // 제보 정보 추가 등록
     Long addShopUser(Long shopId, ShopDTO shopDTO, ShopDetailDTO shopDetailDTO, MapDTO mapDTO);
 

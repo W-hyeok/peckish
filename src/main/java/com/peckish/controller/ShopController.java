@@ -53,6 +53,7 @@ public class ShopController {
 
         //service 호출 - DB 저장
         Long shopId = shopService.add(shopDTO, shopDetailDTO, mapDTO);
+        shopId = shopService.addDetail(shopId, shopDTO, shopDetailDTO, mapDTO);
 
         return Map.of("RESULT", shopId);
     }

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 @Data
 @AllArgsConstructor
@@ -32,6 +33,7 @@ public class MapDTO {
 
     // Entity → DTO
     public MapDTO toMapDTO(Map map) {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime currentTime = LocalTime.now();
         MapDTO mapDTO = new MapDTO();
