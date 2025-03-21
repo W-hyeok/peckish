@@ -71,6 +71,7 @@ public class ShopDetailDTO {
     public ShopDetailDTO toShopUserDTO(ShopUser shopUser){
         ShopDetailDTO shopDetailDTO = new ShopDetailDTO();
 
+        shopDetailDTO.setEmail(shopUser.getMember().getEmail());
         shopDetailDTO.setTitle(shopUser.getTitle());
         shopDetailDTO.setLocation(shopUser.getLocation());
         shopDetailDTO.setShopFilename(shopUser.getFilename());
@@ -86,6 +87,7 @@ public class ShopDetailDTO {
     public ShopDetailDTO toShopOwnerDTO(ShopOwner shopOwner){
         ShopDetailDTO shopDetailDTO = new ShopDetailDTO();
 
+        shopDetailDTO.setEmail(shopOwner.getMember().getEmail());
         shopDetailDTO.setTitle(shopOwner.getTitle());
         shopDetailDTO.setLocation(shopOwner.getLocation());
         shopDetailDTO.setShopFilename(shopOwner.getFilename());

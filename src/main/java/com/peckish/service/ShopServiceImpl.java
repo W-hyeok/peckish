@@ -81,14 +81,16 @@ public class ShopServiceImpl implements ShopService {
         // 경로에서 받은 shopId
         // 실제 DB에 저장되어있는 shop테이블 shop 정보
         Shop shopEntity = shopRepository.findById(shopId).orElseThrow();
+        Member member = memberRepository.findById(shopDetailDTO.getEmail()).orElseThrow();
+
         log.info("addShopUser : {} ", shopId);
 
         // DTO -> ShopUserEntity
         ShopUser shopUserEntity = shopDetailDTO.toShopUserEntity();
         shopUserEntity.setShop(shopEntity); //shopId
+        shopUserEntity.setMember(member); // user 추가 정보 작성자 정보 넣어주기
 
         // shopUserEntity.setShop(shopEntity);
-
         // isUserData = true
         shopEntity.changeUserData(true);
         // shopUser isExist = true
@@ -105,12 +107,15 @@ public class ShopServiceImpl implements ShopService {
     public Long addShopOwner(Long shopId, ShopDTO shopDTO, ShopDetailDTO shopDetailDTO, MapDTO mapDTO) {
         // 경로에서 받은 Id 저장
         Shop shopEntity = shopRepository.findById(shopId).orElseThrow();
+        Member member = memberRepository.findById(shopDetailDTO.getEmail()).orElseThrow();
         log.info("addShopOwner : {}", shopId);
 
         // DTO->Entity
         ShopOwner shopOwnerEntity = shopDetailDTO.toShopOwnerEntity();
         shopOwnerEntity.setShop(shopEntity);
-        
+        shopOwnerEntity.setMember(member);
+        // 인증정보 여부 true
+        shopEntity.changeCertificate(true);
         // 인증 정보 true
         shopEntity.changeOwnerData(true);
         // shop isExist true

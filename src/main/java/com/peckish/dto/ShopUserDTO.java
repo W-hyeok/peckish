@@ -34,7 +34,7 @@ public class ShopUserDTO {
         this.shopUserId = shopUser.getShopUserId();
         // 추후 email이 화면에서 필요하면 repository EntityGraph에 member도 추가해서
         // member까지 같이 조회해와 아래 코드로 이메일 추가하기
-        //this.email = shopUser.getMember().getEmail();
+        this.email = shopUser.getMember().getEmail();
         this.title = shopUser.getTitle();
         this.location = shopUser.getLocation();
         this.category = shopUser.getCategory();

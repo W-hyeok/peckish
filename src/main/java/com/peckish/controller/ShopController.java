@@ -85,7 +85,7 @@ public class ShopController {
         String shopFilename = fileUtil.saveFile(file);
         
         log.info("파일 업로드 - shopFilename: {}", shopFilename);
-        
+        // 작성자 email 이 shopOwner 테이블에 있다면 등록 안되도록
         shopDetailDTO.setShopFilename(shopFilename);
         Long savedshopID = shopService.addShopOwner(shopId, shopDTO, shopDetailDTO, mapDTO);
         //shopRepository.save()
@@ -144,21 +144,20 @@ public class ShopController {
         List<MenuRespDTO> shopOwnerMenu = null;
         List<ReviewRespDTO> shopUserReview = null;
         List<ReviewRespDTO> shopOwnerReview = null;
-        Double UserAverage = null;
-        Double OwnerAverage = null;
+
 
         // shopUser가 있으면 메뉴 가져와봐
         if (shopDTO.isUserData()) {
             shopUserMenu = shopService.getShopUserMenu(shopId);
             shopUserReview = reviewService.getReviewUser(shopId);
-            //UserAverage =
+
 
         }
         // shopOwner가 있으면 메뉴 가져와봐
         if (shopDTO.isOwnerData()) {
             shopOwnerMenu = shopService.getShopOwnerMenu(shopId);
             shopOwnerReview = reviewService.getReviewOwner(shopId);
-            //OwnerAverage = reviewService.findBy
+
         }
 
         // 화면에 전달해줄 데이터를 RespDTO로 취합
