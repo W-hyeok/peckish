@@ -39,11 +39,6 @@ public class ShopOwner {
     @JoinColumn(name="SHOP_ID")
     @Setter
     private Shop shop;
-
-    @OneToOne(fetch = FetchType.LAZY) // Member:Shop=N:1 // 기본값 EAGER
-    @JoinColumn(name="email") // join 할(= 반대편의) 컬럼명
-    @Setter
-    private Member member;
     
     // 메뉴 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopOwner")
@@ -54,7 +49,13 @@ public class ShopOwner {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shopOwner")
     @Builder.Default
     private List<ReviewOwner> reviewOwner = new ArrayList<>();
-    
+
+    // 작성자
+    @OneToOne(fetch = FetchType.LAZY) // Member:Shop=N:1 // 기본값 EAGER
+    @JoinColumn(name="email") // join 할(= 반대편의) 컬럼명
+    @Setter
+    private Member member;
+
     // 수정 : regDate 제외한 모든 데이터 수정
     public void changeTitle(String title){
         this.title=title;

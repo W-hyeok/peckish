@@ -45,6 +45,7 @@ public class ShopUser {
     @Builder.Default
     private List<ReviewUser> reviewUser = new ArrayList<>();
 
+    // 작성자
     @ManyToOne(fetch = FetchType.LAZY) // Member:Shop=N:1 // 기본값 EAGER
     @JoinColumn(name="email") // join 할(= 반대편의) 컬럼명
     @Setter

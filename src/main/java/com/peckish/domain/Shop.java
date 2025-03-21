@@ -21,6 +21,7 @@ public class Shop {
 
     private boolean isExist; // 삭제 여부 (true = 1: 존재, false = 0: 삭제처리)
 
+    @Setter
     private String email;
 
     private boolean certificate; // 폼입력시  제보/인증 분기 (제보:0 false, 사장:1 true)

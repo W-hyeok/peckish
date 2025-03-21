@@ -53,8 +53,9 @@ public class ShopServiceImpl implements ShopService {
             savedShop.changeOwnerData(true); // 사장데이터 있다
             /* todo: member column update - isOwned false → true */
             memberRepository.updateIsOwned(member.getEmail());
-            shopOwnerEntity.setMember(member);
+            shopOwnerEntity.setMember(member); // 작성자 정보 추가
             shopOwnerEntity.setShop(savedShop); // 저장한 위 Shop엔티티 추가
+            member.changeOwned(true); // 소유 여부
             Map mapEntity = mapDTO.toEntity(); // 사장이 작성한 map 정보 DB -> Entity
             //map에 저장할 때 shopId 저장
             mapEntity.setShop(savedShop);
@@ -64,7 +65,7 @@ public class ShopServiceImpl implements ShopService {
             // 제보로 처리
             ShopUser shopUserEntity = shopDetailDTO.toShopUserEntity();
             savedShop.changeUserData(true); // 제보데이터 있다
-            shopUserEntity.setMember(member);
+            shopUserEntity.setMember(member); // User 작성자 추가
             shopUserEntity.setShop(savedShop);
             shopUserRepository.save(shopUserEntity);
             Map mapEntity = mapDTO.toEntity(); // 제보자가 작성한 map 정보 DB -> Entity
@@ -386,7 +387,13 @@ public class ShopServiceImpl implements ShopService {
             shop.changeUserData(false);
         }else if(infoType.equals("OWNER")){
             ShopOwner shopOwner = shopOwnerRepository.findById(shopDetailId).orElseThrow();
-            shopOwner.changeisExist(false);
+            shop.setEmail(null);
+            shopOwner.setMember(null);
+            // shopOwner에는 email이 null이면 안됨
+            // 상점 삭제시, 사용자 email 정보를 가져와 shopOwner
+            shop.changeCertificate(false);
+            shopOwner.changeisExist(false); 
+            shop.changeExist(false); // 사장님 점포 삭제시 존재여부 false로 변경
             shop.changeOwnerData(false);
         }
 

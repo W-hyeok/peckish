@@ -1,5 +1,6 @@
 package com.peckish.dto;
 
+import com.peckish.domain.Member;
 import com.peckish.domain.ShopOwner;
 import com.peckish.domain.ShopUser;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ShopDetailDTO {
     //private Long shopDetailId; // (PK) shopUser 또는 shopOwner 의 pk값이 담기는 변수
-    private String email;
+    private String email; // 작성자 email 정보
     private String title;
     private String location;
     private String days;
@@ -44,6 +45,7 @@ public class ShopDetailDTO {
                 .filename(shopFilename)
                 .regDate(LocalDateTime.now())
                 .updateDate(LocalDateTime.now())
+
                 .build();
         return owner;
     }
