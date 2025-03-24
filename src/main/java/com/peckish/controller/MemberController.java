@@ -211,7 +211,7 @@ public class MemberController {
 
         ShopDTO shopDTO = memberService.getShopByEmail(email);
         if (shopDTO != null) {
-            List<MenuRespDTO> shopUserMenu = null;
+//            List<MenuRespDTO> shopUserMenu = null;
             List<MenuRespDTO> shopOwnerMenu = null;
 
 //            // shopUser가 있으면 메뉴 가져와봐
@@ -228,7 +228,7 @@ public class MemberController {
                     .shopDTO(shopDTO)
                     .shopUserDTO(shopDTO.getShopUserDTO())
                     .shopOwnerDTO(shopDTO.getShopOwnerDTO())
-                    .menuUserList(shopUserMenu)
+//                    .menuUserList(shopUserMenu)
                     .menuOwnerList(shopOwnerMenu)
                     .build();
 
