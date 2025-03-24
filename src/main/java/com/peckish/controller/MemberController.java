@@ -226,7 +226,7 @@ public class MemberController {
             // 화면에 전달해줄 데이터를 RespDTO로 취합
             ShopDetailRespDTO shop = ShopDetailRespDTO.builder()
                     .shopDTO(shopDTO)
-                    .shopUserDTO(shopDTO.getShopUserDTO())
+//                    .shopUserDTO(shopDTO.getShopUserDTO())
                     .shopOwnerDTO(shopDTO.getShopOwnerDTO())
 //                    .menuUserList(shopUserMenu)
                     .menuOwnerList(shopOwnerMenu)
