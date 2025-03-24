@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@CrossOrigin(origins = {"http://localhost:5173", "http://192.168.100.154:5173"})
+@CrossOrigin(origins = {"http://localhost:5173", "https://hungrymoment.store"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/room")

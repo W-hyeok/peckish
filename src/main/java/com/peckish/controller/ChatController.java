@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/chat/room")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:5173", "http://192.168.100.154:5173"})  // 여러 출처 설정
+@CrossOrigin(origins = {"http://localhost:5173","https://hungrymoment.store" })  // 여러 출처 설정
 public class ChatController {
 
     private final ChatService chatService;
