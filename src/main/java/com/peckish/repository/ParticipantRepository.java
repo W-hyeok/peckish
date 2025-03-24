@@ -14,11 +14,12 @@ public interface ParticipantRepository extends JpaRepository<Participants, Long>
             "   WHERE msg.ROOM_ID = p.ROOM_ID " +
             "     AND msg.isRead = false " +
             "     AND msg.STATUS = 'ACTIVE' " +
-            "     AND msg.EMAIL <> :memberEmail) " +
+            "     AND msg.EMAIL <> :memberEmail), m.nickname " +
             "FROM Participants p JOIN Member m ON p.email = m.email " +
             "WHERE p.ROOM_ID IN (SELECT p2.ROOM_ID FROM Participants p2 WHERE p2.email = :memberEmail) " +
             "  AND p.email <> :memberEmail")
     List<Object[]> getRoomIdPhotoAndUnreadCountByUserName(@Param("memberEmail") String memberEmail);
+
 
     // 사장님(즉, ownerEmail)이 참여한 모든 참가자 행을 조회
     List<Participants> findByEmail(String email);

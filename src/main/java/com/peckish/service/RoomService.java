@@ -86,7 +86,8 @@ public class RoomService {
             Long roomId = (Long) result[0];
             String photoPath = (String) result[1];
             Long unreadCount = (Long) result[2];
-            return new RoomDTO(roomId, photoPath, unreadCount);
+            String nickname = (String) result[3];
+            return new RoomDTO(roomId, photoPath, unreadCount, nickname);
         }).collect(Collectors.toList());
     }
 
