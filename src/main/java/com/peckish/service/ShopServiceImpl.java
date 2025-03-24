@@ -5,6 +5,7 @@ import com.peckish.dto.*;
 import com.peckish.repository.*;
 import com.peckish.util.FileUtil;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,11 @@ public class ShopServiceImpl implements ShopService {
         // 1. shopDTO => ShopEntity 변경 -> shop테이블 저장  -> shop_id 리턴받기
         Shop shopEntity = shopDTO.toEntity();
         Shop savedShop = shopRepository.save(shopEntity);
-
+        if(shopDTO.isCertificate()) {
+            savedShop.changeOwnerData(true);
+        }else {
+            savedShop.changeUserData(true);
+        }
 
         return savedShop.getShopId(); // shop_id 리턴
     }
@@ -46,7 +51,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public Long addDetail(Long shopId, ShopDTO shopDTO, ShopDetailDTO shopDetailDTO, MapDTO mapDTO) {
         Shop shopEntity = shopRepository.findById(shopId).orElseThrow(EntityNotFoundException::new);
-
+        log.info("service addDetail - shopEntity {}", shopEntity);
         Member member = memberRepository.findById(shopDetailDTO.getEmail()).orElseThrow();
         log.info("멤버 정보? {}", member);
         // Member(email=owner@owner.com, nickname=테스트사장, phone=010-1111-2222 social=false, memberStat=1
@@ -58,7 +63,6 @@ public class ShopServiceImpl implements ShopService {
         if (shopDTO.isCertificate()) {
             // 사장으로 처리
             ShopOwner shopOwnerEntity = shopDetailDTO.toShopOwnerEntity();
-            shopEntity.changeOwnerData(true); // 사장데이터 있다
             log.info("isOwnerData??, {}", shopEntity.isOwnerData());
             /* todo: member column update - isOwned false → true */
             memberRepository.updateIsOwned(member.getEmail());
@@ -74,7 +78,6 @@ public class ShopServiceImpl implements ShopService {
         } else {
             // 제보로 처리
             ShopUser shopUserEntity = shopDetailDTO.toShopUserEntity();
-            shopEntity.changeUserData(true); // 제보데이터 있다
             shopUserEntity.setMember(member); // User 작성자 추가
             shopUserEntity.setShop(shopEntity);
             shopUserRepository.save(shopUserEntity);
@@ -406,7 +409,8 @@ public class ShopServiceImpl implements ShopService {
             shop.changeUserData(false);
         }else if(infoType.equals("OWNER")){
             ShopOwner shopOwner = shopOwnerRepository.findById(shopDetailId).orElseThrow();
-            shop.setEmail(null);
+            shop.setEmail(null); // Owner의 추가 상점 등록을 위해 Owner테이블 정보 지우기
+            shop.changeUserData(false); // Owner 상점이 사라지면 UserData 정보 지우기
             shopOwner.setMember(null);
             // shopOwner에는 email이 null이면 안됨
             // 상점 삭제시, 사용자 email 정보를 가져와 shopOwner

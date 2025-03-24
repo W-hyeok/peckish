@@ -45,7 +45,6 @@ public class ShopDetailDTO {
                 .filename(shopFilename)
                 .regDate(LocalDateTime.now())
                 .updateDate(LocalDateTime.now())
-
                 .build();
         return owner;
     }

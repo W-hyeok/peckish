@@ -32,6 +32,8 @@ public class ShopOwner {
     private boolean isExist; // 삭제 여부 (1: 삭제처리)
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
+
+    
     @Builder.Default
     private String infoType = "OWNER";  // OWNER - owner
 
