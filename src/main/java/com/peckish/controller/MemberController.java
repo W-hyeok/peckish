@@ -214,10 +214,10 @@ public class MemberController {
             List<MenuRespDTO> shopUserMenu = null;
             List<MenuRespDTO> shopOwnerMenu = null;
 
-            // shopUser가 있으면 메뉴 가져와봐
-            if (shopDTO.isUserData()) {
-                shopUserMenu = shopService.getShopUserMenu(shopDTO.getShopId());
-            }
+//            // shopUser가 있으면 메뉴 가져와봐
+//            if (shopDTO.isUserData()) {
+//                shopUserMenu = shopService.getShopUserMenu(shopDTO.getShopId());
+//            }
             // shopOwner가 있으면 메뉴 가져와봐
             if (shopDTO.isOwnerData()) {
                 shopOwnerMenu = shopService.getShopOwnerMenu(shopDTO.getShopId());
