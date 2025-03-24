@@ -15,9 +15,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
 
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketChatHandler, "ws/chat")
+        registry.addHandler(webSocketChatHandler, "/ws/chat")
                 .addInterceptors(new WebCookieHandshakeInterceptor())
                 .setAllowedOrigins("*");
-
     }
 }
