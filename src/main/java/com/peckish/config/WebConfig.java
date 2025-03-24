@@ -9,7 +9,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")  // 모든 경로에 대해 CORS 허용
-                .allowedOrigins("http://localhost:5173")  // React 앱 URL
+//                .allowedOrigins("http://localhost:5173")  // React 앱 URL
+                .allowedOrigins("https://hungrymoment.store")  // React 도메인 URL
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
