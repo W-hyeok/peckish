@@ -42,7 +42,8 @@ public class MapDTO {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime currentTime = LocalTime.now();
         DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
-        String currentDate = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN);
+        String currentDate = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREA);
+        log.info("현재 날짜: {}", currentDate);
         MapDTO mapDTO = new MapDTO();
         mapDTO.setMapId(map.getMapId());
         mapDTO.setShopId(map.getShop().getShopId());
@@ -61,8 +62,9 @@ public class MapDTO {
 //            mapDTO.setStatus(!mapDTO.isOpen() ? "closed" : (!(currentTime.isAfter(mapDTO.getOpenTime()) && currentTime.isBefore(mapDTO.getCloseTime())) ? "closed" : "opened"));
             // (시간 조건) 및 isOpen 둘 중 하나라도 open이면 opened
             mapDTO.setDays(map.getShop().getShopOwner().getDays());
-            if((currentTime.isAfter(mapDTO.getOpenTime()) && currentTime.isBefore(mapDTO.getCloseTime())) || mapDTO.isOpen() && mapDTO.days.contains(currentDate)) {
+            if((currentTime.isAfter(mapDTO.getOpenTime()) && currentTime.isBefore(mapDTO.getCloseTime()) && mapDTO.getDays().contains(currentDate)) || mapDTO.isOpen()) {
                 mapDTO.setStatus("opened");
+                log.info("저장된 날짜: {}", mapDTO.getDays());
             } else {
                 mapDTO.setStatus("closed");
             }
@@ -77,7 +79,9 @@ public class MapDTO {
             mapDTO.setOpen(map.getShop().getShopUser().isOpen());
             mapDTO.setDays(map.getShop().getShopUser().getDays());
             // 제보된 가게의 경우 시간 조건만 맞으면 개점으로 판정.
-            mapDTO.setStatus(currentTime.isAfter(mapDTO.getOpenTime()) && currentTime.isBefore(mapDTO.getCloseTime()) && mapDTO.days.contains(currentDate) ? "opened" : "closed");
+            mapDTO.setStatus(currentTime.isAfter(mapDTO.getOpenTime()) && currentTime.isBefore(mapDTO.getCloseTime())
+                    && mapDTO.getDays().contains(currentDate)
+                    ? "opened" : "closed");
         }
         return mapDTO;
     }
