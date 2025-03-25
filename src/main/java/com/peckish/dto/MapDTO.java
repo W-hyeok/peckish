@@ -47,10 +47,10 @@ public class MapDTO {
         MapDTO mapDTO = new MapDTO();
         mapDTO.setMapId(map.getMapId());
         mapDTO.setShopId(map.getShop().getShopId());
-        mapDTO.setLat(map.getLat());
-        mapDTO.setLng(map.getLng());
         // certificate = true → owner
         if(map.getShop().isCertificate()) {
+            mapDTO.setLat(map.getLat());
+            mapDTO.setLng(map.getLng());
             mapDTO.setCertificate(true);
             mapDTO.setTitle(map.getShop().getShopOwner().getTitle());
             mapDTO.setLocation(map.getShop().getShopOwner().getLocation());
@@ -70,6 +70,8 @@ public class MapDTO {
             }
         } else {
             mapDTO.setCertificate(false);
+            mapDTO.setLat(map.getLat());
+            mapDTO.setLng(map.getLng());
             mapDTO.setTitle(map.getShop().getShopUser().getTitle());
             mapDTO.setLocation(map.getShop().getShopUser().getLocation());
             mapDTO.setCategory(map.getShop().getShopUser().getCategory());
