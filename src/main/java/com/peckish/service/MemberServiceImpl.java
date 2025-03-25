@@ -1,11 +1,9 @@
 package com.peckish.service;
 
-import com.peckish.domain.Member;
-import com.peckish.domain.Role;
-import com.peckish.domain.Shop;
-import com.peckish.domain.ShopUser;
+import com.peckish.domain.*;
 import com.peckish.dto.*;
 import com.peckish.repository.MemberRepository;
+import com.peckish.repository.ShopOwnerRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +32,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ShopOwnerRepository shopOwnerRepository;
 
     @Override
     public MemberDTO getKakaoMember(String accessToken) {
@@ -103,8 +102,6 @@ public class MemberServiceImpl implements MemberService {
 
         return memberResponseDTO;
     }
-
-
 
 
     // Member(Entity) → MemberResponseDTO 변환 메서드
@@ -330,6 +327,22 @@ public class MemberServiceImpl implements MemberService {
 
         return memberList;
     }
+
+    @Override
+    public ShopDTO getShopByEmailFromOwner(String email) {
+
+        ShopOwner shopOwner = shopOwnerRepository.findOneShopByEmailFromShopOwner(email);
+        if(shopOwner == null) {
+            return null;
+        }
+        Shop findShop = shopOwner.getShop();
+        if(findShop != null) {
+            return new ShopDTO(findShop);
+        }else {
+            return null;
+        }
+    }
+
     @Override
     public ShopDTO getShopByEmail(String email) {
         // 1. Shop : email로 shop 정보 가져오기
@@ -339,11 +352,11 @@ public class MemberServiceImpl implements MemberService {
             ShopDTO shopDTO = new ShopDTO(shop);
 
             // ShopUser가 있으면
-            if(shopDTO.isUserData()) {
-                // ShopUser 엔티티를 ShopUserDTO로 변환해 ShopDTO에 추가
-                ShopUserDTO shopUserDTO = new ShopUserDTO(shop.getShopUser());
-                shopDTO.setShopUserDTO(shopUserDTO);
-            }
+//            if(shopDTO.isUserData()) {
+//                // ShopUser 엔티티를 ShopUserDTO로 변환해 ShopDTO에 추가
+//                ShopUserDTO shopUserDTO = new ShopUserDTO(shop.getShopUser());
+//                shopDTO.setShopUserDTO(shopUserDTO);
+//            }
             if(shopDTO.isOwnerData()) {
                 ShopOwnerDTO shopOwnerDTO = new ShopOwnerDTO(shop.getShopOwner());
                 shopDTO.setShopOwnerDTO(shopOwnerDTO);

@@ -3,6 +3,7 @@ package com.peckish.controller;
 import com.peckish.dto.*;
 import com.peckish.repository.ShopRepository;
 import com.peckish.service.MemberService;
+import com.peckish.service.ReviewService;
 import com.peckish.service.ShopService;
 import com.peckish.util.FileUtil;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class MemberController {
     private final ShopService shopService;
     private final FileUtil fileUtil;
     private final ShopRepository shopRepository;
+    private final ReviewService reviewService;
 
     @PostMapping("/")
     public Map<String, String> regist(MemberFormDTO memberFormDTO) {
@@ -71,7 +73,6 @@ public class MemberController {
     public List<MemberResponseDTO> getMemberByBusinessNumber(@PathVariable("businessNumber") String businessNumber) {
         List<MemberResponseDTO> memberResponseDTOs = memberService.getMembersByBusinessNumber(businessNumber);
 
-        log.info("@#$#$%@$%^%: {}", memberResponseDTOs.toString());
         return memberResponseDTOs;
     }
 
@@ -209,29 +210,37 @@ public class MemberController {
     public Map<String, ShopDetailRespDTO> getOneShopByEmail(@PathVariable("email") String email) {
         log.info("Member Controller에서 점포관리를 위해 넘어온 email 확인 : {} ", email);
 
-        ShopDTO shopDTO = memberService.getShopByEmail(email);
-        if (shopDTO != null) {
-//            List<MenuRespDTO> shopUserMenu = null;
-            List<MenuRespDTO> shopOwnerMenu = null;
+        ShopDTO onlyShop = memberService.getShopByEmailFromOwner(email);
 
-//            // shopUser가 있으면 메뉴 가져와봐
-//            if (shopDTO.isUserData()) {
-//                shopUserMenu = shopService.getShopUserMenu(shopDTO.getShopId());
-//            }
+        if (onlyShop != null) {
+            List<MenuRespDTO> shopUserMenu = null;
+            List<MenuRespDTO> shopOwnerMenu = null;
+            List<ReviewRespDTO> shopUserReview = null;
+            List<ReviewRespDTO> shopOwnerReview = null;
+
+            ShopDTO shopDTO = shopService.getShop(onlyShop.getShopId());
+
+            // shopUser가 있으면 메뉴 가져와봐
+            if (shopDTO.isUserData()) {
+                shopUserMenu = shopService.getShopUserMenu(shopDTO.getShopId());
+                shopUserReview = reviewService.getReviewUser(shopDTO.getShopId());
+            }
             // shopOwner가 있으면 메뉴 가져와봐
             if (shopDTO.isOwnerData()) {
                 shopOwnerMenu = shopService.getShopOwnerMenu(shopDTO.getShopId());
+                shopOwnerReview = reviewService.getReviewOwner(shopDTO.getShopId());
             }
 
             // 화면에 전달해줄 데이터를 RespDTO로 취합
             ShopDetailRespDTO shop = ShopDetailRespDTO.builder()
                     .shopDTO(shopDTO)
-//                    .shopUserDTO(shopDTO.getShopUserDTO())
+                    .shopUserDTO(shopDTO.getShopUserDTO())
                     .shopOwnerDTO(shopDTO.getShopOwnerDTO())
-//                    .menuUserList(shopUserMenu)
+                    .menuUserList(shopUserMenu)
                     .menuOwnerList(shopOwnerMenu)
+                    .reviewUserList(shopUserReview)
+                    .reviewOwnerList(shopOwnerReview)
                     .build();
-
 
             log.info("shopResp : {}", shop);
             return Map.of("RESULT", shop);

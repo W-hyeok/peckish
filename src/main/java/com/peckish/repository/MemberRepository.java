@@ -2,6 +2,7 @@ package com.peckish.repository;
 
 import com.peckish.domain.Member;
 import com.peckish.domain.Shop;
+import com.peckish.domain.ShopOwner;
 import com.peckish.domain.ShopUser;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -45,6 +46,7 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     // shop 정보 가져오기 구현 중
     @Query("SELECT s FROM Shop s WHERE s.email = :email")
     Shop findOneShopByEmail(@Param("email") String email);
+
 
     // 영업개시 쿼리문 작성
     @Modifying(clearAutomatically = true)

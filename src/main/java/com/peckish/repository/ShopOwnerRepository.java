@@ -25,4 +25,11 @@ public interface ShopOwnerRepository extends JpaRepository<ShopOwner, Long> {
 
     // ShopId를 기준으로 ShopOwner 정보 조회
     Optional<ShopOwner> findByShop_ShopId(Long shopId);
+
+
+    // shop 정보 가져오기 구현 중
+    @EntityGraph(attributePaths = {"shop"})
+    @Query("SELECT so FROM ShopOwner so WHERE so.member.email = :email")
+    ShopOwner findOneShopByEmailFromShopOwner(@Param("email") String email);
+
 }

@@ -66,4 +66,7 @@ public interface MemberService {
 
     // 멤버 1명 이상 조회(사업자 등록번호로 멤버 조회)
     List<MemberResponseDTO> getMembersByBusinessNumber(String businessNumber);
+
+
+    ShopDTO getShopByEmailFromOwner(String email);
 }

@@ -8,4 +8,6 @@ import org.springframework.stereotype.Service;
 public interface MenuOwnerRepository extends JpaRepository<MenuOwner, Long> {
     // OWNER 타입의 메뉴 정보 조회
    // Optional<MenuOwner> findByShopIdAndType(Long shopId, String type);
+
+
 }
