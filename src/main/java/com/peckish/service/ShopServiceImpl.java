@@ -8,7 +8,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -104,14 +103,14 @@ public class ShopServiceImpl implements ShopService {
         ShopUser shopUserEntity = shopDetailDTO.toShopUserEntity();
         shopUserEntity.setShop(shopEntity); //shopId
         shopUserEntity.setMember(member); // user 추가 정보 작성자 정보 넣어주기
-        //최근 수정일자
-        shopUserEntity.changeUpdateDate(LocalDateTime.now());
+
         // shopUserEntity.setShop(shopEntity);
         // isUserData = true
         shopEntity.changeUserData(true);
         // shopUser isExist = true
         shopUserEntity.changeisExist(true);
 
+        shopRepository.save(shopEntity);
         shopUserRepository.save(shopUserEntity);
 
         return shopId;
@@ -130,16 +129,14 @@ public class ShopServiceImpl implements ShopService {
         ShopOwner shopOwnerEntity = shopDetailDTO.toShopOwnerEntity();
         shopOwnerEntity.setShop(shopEntity);
         shopOwnerEntity.setMember(member);
-        //최근 수정일자
-        shopOwnerEntity.changeUpdateDate(LocalDateTime.now());
         // 인증정보 여부 true
         shopEntity.changeCertificate(true);
         // 인증 정보 true
         shopEntity.changeOwnerData(true);
         // shop isExist true
         shopEntity.changeExist(true);
-
-       shopOwnerRepository.save(shopOwnerEntity);
+        shopRepository.save(shopEntity);
+        shopOwnerRepository.save(shopOwnerEntity);
 
         return shopId;
     }
